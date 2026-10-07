@@ -711,41 +711,85 @@ body::before {
   letter-spacing: 1.2px;
 }
 
-.start-hierarchy-pills {
+.start-hierarchy-chart {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   width: 100%;
-  margin: 6px 0 10px 0;
+  margin: 6px 0 12px 0;
   font-family: var(--font-tech);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  flex-wrap: wrap;
+}
+
+.hierarchy-main-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hierarchy-fork-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1px;
+}
+
+.hierarchy-fork-svg {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.45));
+}
+
+.hierarchy-branch-targets {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
 }
 
 .rank-step {
-  padding: 2px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-arcade);
+  font-size: 0.74rem;
+  letter-spacing: 0.8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .rank-step.active {
-  background: rgba(0, 240, 255, 0.18);
+  background: rgba(0, 240, 255, 0.2);
   color: var(--color-primary);
   border-color: var(--border-neon);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
-.rank-step.gold {
+.rank-step.rank-eb {
+  color: #d18eff;
+  border-color: rgba(199, 125, 255, 0.45);
+  background: rgba(155, 93, 229, 0.14);
+}
+
+.rank-step.gold,
+.rank-step.rank-gb {
   color: var(--color-gold);
-  border-color: rgba(255, 209, 102, 0.3);
+  border-color: rgba(255, 209, 102, 0.5);
+  background: rgba(255, 209, 102, 0.14);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.25);
 }
 
-.start-hierarchy-pills .arrow {
+.start-hierarchy-chart .arrow {
   color: var(--text-dim);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
 }
 
 .start-input-group {

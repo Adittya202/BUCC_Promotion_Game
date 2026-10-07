@@ -138,16 +138,28 @@
             </div>
           </div>
 
-          <div class="start-hierarchy-pills">
-            <span class="rank-step active">7 GMs</span>
-            <span class="arrow">&rarr;</span>
-            <span class="rank-step">7 EXECS</span>
-            <span class="arrow">&rarr;</span>
-            <span class="rank-step">14 SR. EXECS</span>
-            <span class="arrow">&rarr;</span>
-            <span class="rank-step">7 EBS</span>
-            <span class="arrow">&rarr;</span>
-            <span class="rank-step gold">4 GBS</span>
+          <div class="start-hierarchy-chart">
+            <div class="hierarchy-main-flow">
+              <span class="rank-step active" title="General Member">GM</span>
+              <span class="arrow">&rarr;</span>
+              <span class="rank-step" title="Executive">EXE</span>
+              <span class="arrow">&rarr;</span>
+              <span class="rank-step" title="Senior Executive">SE</span>
+            </div>
+            <div class="hierarchy-fork-connector">
+              <svg width="24" height="46" viewBox="0 0 24 46" fill="none" class="hierarchy-fork-svg" aria-hidden="true">
+                <!-- Top Branch to GB -->
+                <path d="M 1 23 H 9 C 14 23 15 11 19 11" stroke="rgba(255, 209, 102, 0.85)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                <path d="M 16 8 L 20 11 L 16 14" stroke="rgba(255, 209, 102, 0.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <!-- Bottom Branch to EB -->
+                <path d="M 1 23 H 9 C 14 23 15 35 19 35" stroke="rgba(0, 240, 255, 0.75)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                <path d="M 16 32 L 20 35 L 16 38" stroke="rgba(0, 240, 255, 0.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg>
+            </div>
+            <div class="hierarchy-branch-targets">
+              <span class="rank-step rank-gb gold" title="Governing Body">GB</span>
+              <span class="rank-step rank-eb" title="Executive Board">EB</span>
+            </div>
           </div>
 
           <div class="input-group start-input-group">
