@@ -47,138 +47,137 @@ return [
         ]
     ],
 
-    // Exactly 7 General Members (Level 1)
+    // Exactly 7 General Members (Level 1) - One per department consecutively
     'gm_members' => [
-        ['name' => 'GM Tanvir Rookie', 'title' => 'Freshman Member'],
-        ['name' => 'GM Sadia Python', 'title' => 'Code Apprentice'],
-        ['name' => 'GM Rayan Hardware', 'title' => 'Lab Trainee'],
-        ['name' => 'GM Lamia Algorist', 'title' => 'Problem Solver'],
-        ['name' => 'GM Faisal Frontend', 'title' => 'Web Novice'],
-        ['name' => 'GM Tasnim Git', 'title' => 'Version Control Trainee'],
-        ['name' => 'GM Nafis Creative', 'title' => 'Junior Designer']
+        ['name' => 'C&M Member', 'dept_name' => 'C&M', 'color' => '#ff9f1c', 'title' => 'General Member'],
+        ['name' => 'Creative Member', 'dept_name' => 'Creative', 'color' => '#ff2a85', 'title' => 'General Member'],
+        ['name' => 'Event Mgmt Member', 'dept_name' => 'Event Management', 'color' => '#2ec4b6', 'title' => 'General Member'],
+        ['name' => 'Finance Member', 'dept_name' => 'Finance', 'color' => '#ffd166', 'title' => 'General Member'],
+        ['name' => 'PR Member', 'dept_name' => 'PR', 'color' => '#00b4d8', 'title' => 'General Member'],
+        ['name' => 'HR Member', 'dept_name' => 'HR', 'color' => '#9b5de5', 'title' => 'General Member'],
+        ['name' => 'R&D Member', 'dept_name' => 'R&D', 'color' => '#00f5d4', 'title' => 'General Member']
     ],
 
-    // 7 BUCC Departments
-    // Exactly 2 Executives per department = 14 Executives Total
-    // Exactly 2 Senior Executives per department = 14 Senior Executives Total
+    // 7 BUCC Departments in user-specified consecutive order:
+    // C&M, Creative, Event Management, Finance, PR, HR, R&D
     'departments' => [
-        'creative' => [
-            'id' => 'creative',
-            'name' => 'Creative',
-            'theme_color' => '#ff2a85',
-            'accent_color' => '#ff70a6',
-            'executives' => [
-                ['name' => 'Abrar Design', 'title' => 'Visual Director', 'rank' => 'Executive'],
-                ['name' => 'Farzana Canvas', 'title' => 'Illustrator Exec', 'rank' => 'Executive']
-            ],
-            'senior_executives' => [
-                ['name' => 'Tanha Aesthetics', 'title' => 'Sr. Exec Visual Arts', 'rank' => 'Senior Executive'],
-                ['name' => 'Fahim Layout', 'title' => 'Sr. Exec Publications', 'rank' => 'Senior Executive']
-            ]
-        ],
         'cm' => [
             'id' => 'cm',
-            'name' => 'Communication & Marketing',
+            'name' => 'C&M',
+            'full_name' => 'Communication & Marketing (C&M)',
             'theme_color' => '#ff9f1c',
             'accent_color' => '#ffbf69',
             'executives' => [
-                ['name' => 'Tahmid Outreach', 'title' => 'C&M Lead Exec', 'rank' => 'Executive'],
-                ['name' => 'Sarah Campaign', 'title' => 'Content Strategist', 'rank' => 'Executive']
+                ['name' => 'Tahmid', 'title' => 'Officer', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Arif Engage', 'title' => 'Sr. Exec Communications', 'rank' => 'Senior Executive'],
-                ['name' => 'Tasnia Promo', 'title' => 'Sr. Exec Brand Outreach', 'rank' => 'Senior Executive']
+                ['name' => 'Md. Ishtiaq Mozumder', 'title' => 'Sr. Exec C&M', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'S.M.Abrar Shaleheen', 'title' => 'Sr. Exec C&M', 'rank' => 'Senior Executive', 'hp' => 60]
+            ]
+        ],
+        'creative' => [
+            'id' => 'creative',
+            'name' => 'Creative',
+            'full_name' => 'Creative',
+            'theme_color' => '#ff2a85',
+            'accent_color' => '#ff70a6',
+            'executives' => [
+                ['name' => 'Abrar', 'title' => 'Visual Designer', 'rank' => 'Executive']
+            ],
+            'senior_executives' => [
+                ['name' => 'MD. Mushfiqur Rahman', 'title' => 'Sr. Exec Creative', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Mahajabin Islam', 'title' => 'Sr. Exec Creative', 'rank' => 'Senior Executive', 'hp' => 60]
             ]
         ],
         'em' => [
             'id' => 'em',
             'name' => 'Event Management',
+            'full_name' => 'Event Management',
             'theme_color' => '#2ec4b6',
             'accent_color' => '#cbf3f0',
             'executives' => [
-                ['name' => 'Tanvir Logistics', 'title' => 'Venue Coordinator', 'rank' => 'Executive'],
-                ['name' => 'Sadia Stage', 'title' => 'Protocol Officer', 'rank' => 'Executive']
+                ['name' => 'Tanvir', 'title' => 'Logistics Officer', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Shakil Decor', 'title' => 'Sr. Exec Stage & Venue', 'rank' => 'Senior Executive'],
-                ['name' => 'Ishraq Planner', 'title' => 'Sr. Exec Event Logistics', 'rank' => 'Senior Executive']
+                ['name' => 'Fahim Faysal', 'title' => 'Sr. Exec Event Mgmt', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Fahim Al Razy', 'title' => 'Sr. Exec Event Mgmt', 'rank' => 'Senior Executive', 'hp' => 60]
             ]
         ],
         'finance' => [
             'id' => 'finance',
             'name' => 'Finance',
+            'full_name' => 'Finance',
             'theme_color' => '#ffd166',
             'accent_color' => '#ffe494',
             'executives' => [
-                ['name' => 'Shakil Ledger', 'title' => 'Budget Master', 'rank' => 'Executive'],
-                ['name' => 'Nafisa Audit', 'title' => 'Treasury Officer', 'rank' => 'Executive']
+                ['name' => 'Shakil', 'title' => 'Treasury Officer', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Faisal Fiscal', 'title' => 'Sr. Exec Treasury', 'rank' => 'Senior Executive'],
-                ['name' => 'Samira Audit', 'title' => 'Sr. Exec Financial Compliance', 'rank' => 'Senior Executive']
-            ]
-        ],
-        'hr' => [
-            'id' => 'hr',
-            'name' => 'Human Resources',
-            'theme_color' => '#9b5de5',
-            'accent_color' => '#b388ff',
-            'executives' => [
-                ['name' => 'Tasnim Recruiter', 'title' => 'Talent Acquisition', 'rank' => 'Executive'],
-                ['name' => 'Arif Personnel', 'title' => 'Member Relations', 'rank' => 'Executive']
-            ],
-            'senior_executives' => [
-                ['name' => 'Nayeem Talent', 'title' => 'Sr. Exec HR Operations', 'rank' => 'Senior Executive'],
-                ['name' => 'Sabrina Mentor', 'title' => 'Sr. Exec Member Development', 'rank' => 'Senior Executive']
+                ['name' => 'Arnab', 'title' => 'Sr. Exec Finance', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Raisa', 'title' => 'Sr. Exec Finance', 'rank' => 'Senior Executive', 'hp' => 60]
             ]
         ],
         'pr' => [
             'id' => 'pr',
-            'name' => 'Public Relations',
+            'name' => 'PR',
+            'full_name' => 'Public Relations (PR)',
             'theme_color' => '#00b4d8',
             'accent_color' => '#90e0ef',
             'executives' => [
-                ['name' => 'Rafid Diplomat', 'title' => 'Club Spokesperson', 'rank' => 'Executive'],
-                ['name' => 'Samira Press', 'title' => 'External Liaison', 'rank' => 'Executive']
+                ['name' => 'Rafid', 'title' => 'Liaison Officer', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Arham Emissary', 'title' => 'Sr. Exec External Relations', 'rank' => 'Senior Executive'],
-                ['name' => 'Shreya Press', 'title' => 'Sr. Exec Media Relations', 'rank' => 'Senior Executive']
+                ['name' => 'Tanisha', 'title' => 'Sr. Exec PR', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Shovon Pr', 'title' => 'Sr. Exec PR', 'rank' => 'Senior Executive', 'hp' => 60]
+            ]
+        ],
+        'hr' => [
+            'id' => 'hr',
+            'name' => 'HR',
+            'full_name' => 'Human Resources (HR)',
+            'theme_color' => '#9b5de5',
+            'accent_color' => '#b388ff',
+            'executives' => [
+                ['name' => 'Tasnim', 'title' => 'Talent Officer', 'rank' => 'Executive']
+            ],
+            'senior_executives' => [
+                ['name' => 'Adittya', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Subrajit', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 60]
             ]
         ],
         'rnd' => [
             'id' => 'rnd',
-            'name' => 'Research & Development',
+            'name' => 'R&D',
+            'full_name' => 'Research & Development (R&D)',
             'theme_color' => '#00f5d4',
             'accent_color' => '#7bf1a8',
             'executives' => [
-                ['name' => 'Adittya Dev', 'title' => 'Core Systems Architect', 'rank' => 'Executive'],
-                ['name' => 'Mahir Kernel', 'title' => 'Full-Stack Specialist', 'rank' => 'Executive']
+                ['name' => 'Dev', 'title' => 'Tech Specialist', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Emon Backend', 'title' => 'Sr. Exec Software Engineering', 'rank' => 'Senior Executive'],
-                ['name' => 'Towhid Frontend', 'title' => 'Sr. Exec Web Technologies', 'rank' => 'Senior Executive']
+                ['name' => 'Mahir Dyan', 'title' => 'Sr. Exec R&D', 'rank' => 'Senior Executive', 'hp' => 60],
+                ['name' => 'Siam Ferdous', 'title' => 'Sr. Exec R&D', 'rank' => 'Senior Executive', 'hp' => 60]
             ]
         ]
     ],
 
-    // Exactly 7 Executive Board (EB) Members (1 from each department)
+    // Exactly 7 Executive Board (EB) Members (1 from each department as listed by user)
     'executive_board_members' => [
-        ['name' => 'Director Sabrina Chroma', 'dept' => 'Creative', 'title' => 'EB Creative Director', 'color' => '#ff2a85'],
-        ['name' => 'Director Rayhan Growth', 'dept' => 'C&M', 'title' => 'EB Strategic Marketing Lead', 'color' => '#ff9f1c'],
-        ['name' => 'Director Tanjim Protocol', 'dept' => 'Event Management', 'title' => 'EB Event Operations Lead', 'color' => '#2ec4b6'],
-        ['name' => 'Director Rehan Forecast', 'dept' => 'Finance', 'title' => 'EB Treasury Director', 'color' => '#ffd166'],
-        ['name' => 'Director Tariq Ethics', 'dept' => 'Human Resources', 'title' => 'EB Governance & HR Lead', 'color' => '#9b5de5'],
-        ['name' => 'Director Riasat Envoy', 'dept' => 'Public Relations', 'title' => 'EB Corporate Relations Director', 'color' => '#00b4d8'],
-        ['name' => 'Director Nazmul Cloud', 'dept' => 'Research & Development', 'title' => 'EB Technology Director', 'color' => '#00f5d4']
+        ['name' => 'Zawad Bhai', 'dept' => 'C&M', 'title' => 'EB C&M Director', 'color' => '#ff9f1c'],
+        ['name' => 'Luban Bhai', 'dept' => 'Creative', 'title' => 'EB Creative Director', 'color' => '#ff2a85'],
+        ['name' => 'Rafi Bhai', 'dept' => 'Event Management', 'title' => 'EB Event Operations Director', 'color' => '#2ec4b6'],
+        ['name' => 'Rawnak Bhai', 'dept' => 'Finance', 'title' => 'EB Treasury Director', 'color' => '#ffd166'],
+        ['name' => 'Kabya Apu', 'dept' => 'HR', 'title' => 'EB Governance & HR Director', 'color' => '#9b5de5'],
+        ['name' => 'Anika Apu', 'dept' => 'PR', 'title' => 'EB PR Director', 'color' => '#00b4d8'],
+        ['name' => 'Abir Bhai', 'dept' => 'R&D', 'title' => 'EB Technology Director', 'color' => '#00f5d4']
     ],
 
-    // Exactly 4 Governing Body (GB) Members (All 4 together in Level 4)
+    // Exactly 4 Governing Body (GB) Members (All 4 together in the last level)
     'governing_body' => [
         [
             'id' => 'gb_president',
-            'name' => 'GB President',
-            'title' => 'Supreme Club Commander',
+            'name' => 'Jauad Ahmed Sadik',
+            'title' => 'President',
             'hp' => 240,
             'attack_pattern' => 'spread',
             'color' => '#ff0055',
@@ -187,8 +186,8 @@ return [
         ],
         [
             'id' => 'gb_vp',
-            'name' => 'GB Vice President',
-            'title' => 'Vice President Strategy',
+            'name' => 'Shudeepta Roy Mou',
+            'title' => 'Vice President',
             'hp' => 210,
             'attack_pattern' => 'dual_burst',
             'color' => '#00d2ff',
@@ -197,8 +196,8 @@ return [
         ],
         [
             'id' => 'gb_gs',
-            'name' => 'GB General Secretary',
-            'title' => 'General Secretary Ops',
+            'name' => 'G M JUBAYER ZAMAN',
+            'title' => 'General Secretary',
             'hp' => 190,
             'attack_pattern' => 'bouncing_orb',
             'color' => '#a855f7',
@@ -207,17 +206,17 @@ return [
         ],
         [
             'id' => 'gb_treasurer',
-            'name' => 'GB Treasurer',
-            'title' => 'Treasurer Vaultmaster',
+            'name' => 'Syed Adnan Rahman',
+            'title' => 'Treasurer',
             'hp' => 180,
             'attack_pattern' => 'cluster_barrage',
-            'color' => '#eab308',
+            'color' => '#ffd166',
             'projectile_speed' => 500,
             'fire_rate' => 2.0
         ]
     ],
 
-    // Weapons Configuration (Shop lowest price is 50 coins)
+    // Weapons Configuration
     'weapons' => [
         'pistol' => [
             'id' => 'pistol',
@@ -233,7 +232,7 @@ return [
         'blaster' => [
             'id' => 'blaster',
             'name' => 'Rapid Blaster',
-            'cost' => 50, // Lowest shop price is 50 coins as requested
+            'cost' => 50,
             'damage' => 26,
             'cooldown' => 0.35,
             'projectile_speed' => 950,
@@ -244,7 +243,7 @@ return [
         'cannon' => [
             'id' => 'cannon',
             'name' => 'Heavy Cannon',
-            'cost' => 90, // Heavy upgraded cannon
+            'cost' => 90,
             'damage' => 60,
             'cooldown' => 0.5,
             'projectile_speed' => 680,
@@ -254,12 +253,13 @@ return [
         ]
     ],
 
-    // Level progression parameters
+    // Level progression parameters (5 Levels)
     'levels' => [
         1 => [
             'name' => 'GM to Executive',
             'type' => 'runner',
-            'target_dodges' => 7, // Exactly 7 GMs total
+            'announcement' => 'General Members are coming',
+            'target_dodges' => 7,
             'coin_reward_per_dodge' => 1,
             'player_rank' => 'GM',
             'promotion_rank' => 'Executive',
@@ -268,8 +268,9 @@ return [
         2 => [
             'name' => 'Executive to Senior Executive',
             'type' => 'runner_shooter_dodge',
+            'announcement' => 'Executives are coming',
             'total_departments' => 7,
-            'target_dodges' => 14, // 14 Department encounters (Executives & Sr. Execs)
+            'target_dodges' => 7,
             'coin_reward_per_dodge' => 4,
             'player_rank' => 'Executive',
             'promotion_rank' => 'Senior Executive',
@@ -278,15 +279,26 @@ return [
         3 => [
             'name' => 'Senior Executive to EB',
             'type' => 'arena_shooter',
-            'enemy_count' => 3,
+            'announcement' => 'Senior executives are coming',
+            'enemy_count' => 14,
             'player_rank' => 'Senior Executive',
             'promotion_rank' => 'Executive Board (EB)',
             'promotion_message' => 'Promoted to Executive Board (EB)!'
         ],
         4 => [
-            'name' => 'EB to Governing Body (Final Stand)',
+            'name' => 'Executive Board Trial',
+            'type' => 'arena_shooter',
+            'announcement' => 'Executive Board Members are coming',
+            'enemy_count' => 7,
+            'player_rank' => 'Executive Board',
+            'promotion_rank' => 'Governing Body Contender',
+            'promotion_message' => 'Outstanding! You conquered the Executive Board! Qualified for Governing Body Trials!'
+        ],
+        5 => [
+            'name' => 'The Final Stand — Governing Body',
             'type' => 'boss_battle',
-            'boss_count' => 4, // 4 GBs all together
+            'announcement' => 'Governing Body Members are coming',
+            'boss_count' => 4,
             'player_rank' => 'Executive Board',
             'promotion_rank' => 'Governing Body Leader',
             'promotion_message' => 'VICTORY! You defeated all 4 Governing Body Leaders and claimed BUCC Leadership!'

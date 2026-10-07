@@ -12,7 +12,9 @@ class RunnerGM {
     this.y = GAME_CONFIG.groundY - this.height;
     this.speed = speed || 310;
     this.name = gmInfo ? gmInfo.name : "Candidate GM";
-    this.title = gmInfo ? gmInfo.title : "General Member";
+    this.deptName = gmInfo ? (gmInfo.deptName || gmInfo.name) : "C&M";
+    this.color = gmInfo ? (gmInfo.color || "#00f0ff") : "#00f0ff";
+    this.title = gmInfo ? (gmInfo.title || "General Member") : "General Member";
     this.animTimer = Math.random() * 5;
     this.dodgedAwarded = false;
     this.isDead = false;
@@ -40,10 +42,12 @@ class DepartmentExec {
     this.y = GAME_CONFIG.groundY - this.height;
     this.speed = speed || 360;
     this.dept = dept;
+    this.deptName = dept ? (dept.name || "Executive") : "Executive";
     this.name = execInfo ? execInfo.name : "Executive";
     this.title = execInfo ? execInfo.title : "Officer";
     this.rank = execInfo ? (execInfo.rank || "Executive") : "Executive";
     this.hasGun = hasGun;
+    this.color = dept ? (dept.themeColor || "#ff9f1c") : "#ff9f1c";
     this.animTimer = Math.random() * 5;
     this.dodgedAwarded = false;
     this.isDead = false;
@@ -99,13 +103,13 @@ class DepartmentExec {
       vy: Math.sin(angle) * projectileSpeed,
       damage: 22,
       radius: 5,
-      color: this.dept.themeColor || "#ff9f1c",
+      color: (this.dept && this.dept.themeColor) || "#ff9f1c",
       isPlayer: false,
       pattern: "straight"
     });
 
     if (particles) {
-      particles.spawnMuzzleFlash(startX, startY, this.dept.themeColor || "#ff9f1c");
+      particles.spawnMuzzleFlash(startX, startY, (this.dept && this.dept.themeColor) || "#ff9f1c");
     }
   }
 
@@ -122,9 +126,10 @@ class ArenaSeniorExec {
     this.x = posX || 740;
     this.y = posY || (GAME_CONFIG.groundY - this.height);
     this.name = config.name;
-    this.title = config.title;
-    this.hp = config.hp || 120;
-    this.maxHp = config.hp || 120;
+    this.title = config.title || "Senior Executive";
+    this.deptName = config.deptName || "Department";
+    this.hp = config.hp || 60;
+    this.maxHp = config.hp || 60;
     this.color = config.color || "#9b5de5";
     this.fireRate = config.fireRate || 1.8;
     this.bulletSpeed = 480; // Fast projectile speed towards player
@@ -196,6 +201,91 @@ class ArenaSeniorExec {
 
   draw(ctx) {
     SpriteRenderer.drawArenaSeniorExec(ctx, this);
+  }
+}
+
+// 4. Level 4: Arena Executive Board Director
+class ArenaExecBoard {
+  constructor(config, posX, posY) {
+    this.width = 40;
+    this.height = 72;
+    this.x = posX || 770;
+    this.y = posY || (GAME_CONFIG.groundY - this.height);
+    this.name = config.name;
+    this.title = config.title || "EB Director";
+    this.deptName = config.deptName || config.dept || "Executive Board";
+    this.hp = config.hp || 85;
+    this.maxHp = config.hp || 85;
+    this.color = config.color || "#e056fd";
+    this.fireRate = config.fireRate || 1.5;
+    this.bulletSpeed = 500;
+    this.shootTimer = 0.8 + Math.random() * 0.8;
+    this.isDead = false;
+    this.hitFlashTimer = 0;
+  }
+
+  update(dt, bullets, player, particles) {
+    this.shootTimer -= dt;
+    if (this.hitFlashTimer > 0) {
+      this.hitFlashTimer -= dt;
+    }
+
+    if (this.shootTimer <= 0 && this.hp > 0) {
+      this.shootTimer = this.fireRate + Math.random() * 0.4;
+      this.fireBullet(bullets, player, particles);
+    }
+  }
+
+  fireBullet(bullets, player, particles) {
+    Sounds.playEnemyShoot();
+    const startX = this.x - 20;
+    const startY = this.y + 24;
+
+    const targetX = player ? (player.x + player.width / 2) : 140;
+    const targetY = player ? (player.y + player.height / 2) : (this.y + 24);
+
+    const dx = targetX - startX;
+    const dy = targetY - startY;
+    const angle = Math.atan2(dy, dx);
+
+    bullets.push({
+      x: startX,
+      y: startY,
+      vx: Math.cos(angle) * this.bulletSpeed,
+      vy: Math.sin(angle) * this.bulletSpeed,
+      damage: 20,
+      radius: 6,
+      color: this.color,
+      isPlayer: false,
+      pattern: "straight"
+    });
+
+    if (particles) {
+      particles.spawnMuzzleFlash(startX, startY, this.color);
+    }
+  }
+
+  takeDamage(amount, particles) {
+    this.hp = Math.max(0, this.hp - amount);
+    this.hitFlashTimer = 0.1;
+    Sounds.playHit();
+
+    if (particles) {
+      particles.spawnHitSparks(this.x + this.width / 2, this.y + this.height / 2, this.color);
+      particles.addFloatingText(`-${amount}`, this.x + this.width / 2, this.y - 12, "#ffd166", 16);
+    }
+
+    if (this.hp <= 0) {
+      this.isDead = true;
+      if (particles) {
+        particles.spawnHitSparks(this.x + this.width / 2, this.y + this.height / 2, "#ffd166");
+        particles.addFloatingText("EB DEFEATED!", this.x + this.width / 2, this.y - 25, "#00f5d4", 20);
+      }
+    }
+  }
+
+  draw(ctx) {
+    SpriteRenderer.drawArenaExecBoard(ctx, this);
   }
 }
 

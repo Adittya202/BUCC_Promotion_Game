@@ -1,7 +1,9 @@
 /**
  * BUCC Dino Runner & Boss Shooter - Level Architecture & Wave Controller
- * Manages Stage 1 (GM Runner), Stage 2 (7 Departments + Gun Dodging + Gold Coins),
- * Intermission Store, Stage 3 (Stationary Arena Duel), and Stage 4 (4 GB Bosses).
+ * Manages Stage 1 (GM Runner), Stage 2 (7 Department Executives),
+ * Intermission Store, Stage 3 (14 Senior Executives Arena Duel),
+ * Stage 4 (7 Executive Board Directors Arena Duel), and
+ * Stage 5 (All 4 Governing Body Leaders Simultaneously).
  */
 
 class LevelManager {
@@ -9,27 +11,37 @@ class LevelManager {
     this.game = game;
     this.currentLevel = 1;
 
-    // Level 1 state
+    // Announcement state
+    this.isAnnouncing = false;
+    this.announcementTimer = 0;
+    this.announcementCallback = null;
+
+    // Level 1 state (7 GMs consecutively, 1 per department)
     this.l1DodgedCount = 0;
     this.l1SpawnedCount = 0;
-    this.l1TargetDodges = GAME_CONFIG.levels[1].targetDodges || 7; // Exactly 7 GMs
+    this.l1TargetDodges = 7;
     this.l1SpawnTimer = 0;
 
-    // Level 2 state
+    // Level 2 state (7 Department Executives consecutively)
     this.l2DeptIndex = 0;
-    this.l2ExecIndex = 0;
     this.l2DodgedTotal = 0;
-    this.l2TargetTotal = GAME_CONFIG.levels[2].targetDodges || 14; // 14 Department encounters
+    this.l2TargetTotal = 7;
     this.l2SpawnTimer = 0;
     this.l2CoinSpawnTimer = 0;
 
-    // Level 3 state
+    // Level 3 state (14 Senior Executives, 2 per department with department popup)
+    this.l3DeptIndex = 0;
     this.l3Enemies = [];
     this.l3DefeatedCount = 0;
 
-    // Level 4 state
-    this.l4Bosses = [];
+    // Level 4 state (7 Executive Board Directors, 1 per department with department popup)
+    this.l4DeptIndex = 0;
+    this.l4Enemies = [];
     this.l4DefeatedCount = 0;
+
+    // Level 5 state (All 4 GB Leaders together)
+    this.l5Bosses = [];
+    this.l5DefeatedCount = 0;
 
     // Bonus coin pickups (Level 2)
     this.coins = [];
@@ -37,23 +49,46 @@ class LevelManager {
 
   reset() {
     this.currentLevel = 1;
+    this.isAnnouncing = false;
+    this.announcementTimer = 0;
+    this.announcementCallback = null;
+
     this.l1DodgedCount = 0;
     this.l1SpawnedCount = 0;
     this.l1SpawnTimer = 1.0;
 
     this.l2DeptIndex = 0;
-    this.l2ExecIndex = 0;
     this.l2DodgedTotal = 0;
     this.l2SpawnTimer = 1.2;
     this.l2CoinSpawnTimer = 0.5;
 
+    this.l3DeptIndex = 0;
     this.l3Enemies = [];
     this.l3DefeatedCount = 0;
 
-    this.l4Bosses = [];
+    this.l4DeptIndex = 0;
+    this.l4Enemies = [];
     this.l4DefeatedCount = 0;
 
+    this.l5Bosses = [];
+    this.l5DefeatedCount = 0;
+
     this.coins = [];
+    if (this.game.ui) {
+      this.game.ui.hideAnnouncement();
+    }
+  }
+
+  showAnnouncement(title, subtitle, color, duration, callback) {
+    this.isAnnouncing = true;
+    this.announcementTimer = duration || 2.2;
+    this.announcementCallback = callback || null;
+    this.game.ui.showAnnouncement(title, subtitle, color);
+    if (this.currentLevel === 5) {
+      Sounds.playAlarm();
+    } else {
+      Sounds.playAnnouncement();
+    }
   }
 
   startLevel(lvlNumber) {
@@ -65,79 +100,156 @@ class LevelManager {
     if (lvlNumber === 1) {
       this.l1DodgedCount = 0;
       this.l1SpawnedCount = 0;
-      this.l1SpawnTimer = 1.2;
       this.game.player.setRank("GM");
       this.game.player.canShoot = false;
       this.game.player.x = 120;
+      // Pop up message: General Members are coming, then enemies will start coming
+      this.showAnnouncement("General Members are coming", "Stage 1 Initiation • 7 Departments", "#00f0ff", 2.2, () => {
+        this.l1SpawnTimer = 0.8;
+      });
     } else if (lvlNumber === 2) {
       this.l2DeptIndex = 0;
-      this.l2ExecIndex = 0;
       this.l2DodgedTotal = 0;
-      this.l2SpawnTimer = 1.2;
-      this.l2CoinSpawnTimer = 0.8;
       this.game.player.setRank("EXECUTIVE");
       this.game.player.canShoot = false;
       this.game.player.x = 120;
+      // In the beginning of the second level, pop up message that executives are coming, then enemies will start coming
+      this.showAnnouncement("Executives are coming", "Stage 2 Department Gauntlet • Armed Suppression", "#ff9f1c", 2.2, () => {
+        this.l2SpawnTimer = 0.9;
+        this.l2CoinSpawnTimer = 0.8;
+      });
     } else if (lvlNumber === 3) {
-      // Stationary Arena Shooter
+      // In the beginning of the 3rd level, write that Senior executives are coming
       this.game.player.setRank("SENIOR_EXECUTIVE");
       this.game.player.canShoot = true;
       this.game.player.x = 140;
+      this.l3DeptIndex = 0;
       this.l3DefeatedCount = 0;
-      this.initLevel3Enemies();
+      this.l3Enemies = [];
+      this.showAnnouncement("Senior executives are coming", "Stage 3 Arena Duel • 7 Departments Gauntlet", "#9b5de5", 2.2, () => {
+        this.spawnLevel3DeptWave(0);
+      });
     } else if (lvlNumber === 4) {
-      // 4 GB Bosses simultaneously
+      // Level 4: Executive Board Members
       this.game.player.setRank("EXECUTIVE_BOARD");
       this.game.player.canShoot = true;
       this.game.player.x = 130;
+      this.l4DeptIndex = 0;
       this.l4DefeatedCount = 0;
-      this.initLevel4Bosses();
-      Sounds.playAlarm();
+      this.l4Enemies = [];
+      this.showAnnouncement("Executive Board Members are coming", "Stage 4 Arena Duel • 7 Board Directors", "#e056fd", 2.2, () => {
+        this.spawnLevel4DeptWave(0);
+      });
+    } else if (lvlNumber === 5) {
+      // In the last level, All four Governing Body members will come together
+      this.game.player.setRank("EXECUTIVE_BOARD");
+      this.game.player.canShoot = true;
+      this.game.player.x = 130;
+      this.l5DefeatedCount = 0;
+      this.l5Bosses = [];
+      this.showAnnouncement("All four Governing Body members will come together", "Stage 5 Apex Stand • BUCC Supreme Leadership", "#ffd166", 2.4, () => {
+        this.initLevel5Bosses();
+      });
     }
 
     this.game.ui.updateHUD();
   }
 
-  initLevel3Enemies() {
-    this.l3Enemies = [];
-    const seConfigs = GAME_CONFIG.levels[3].enemies;
+  // --- LEVEL 3: Senior Executives (Wave by department with department name popup) ---
+  spawnLevel3DeptWave(deptIndex) {
+    const depts = GAME_CONFIG.departments;
+    if (deptIndex >= depts.length) {
+      // All 7 departments cleared!
+      this.game.triggerPromotion(3);
+      return;
+    }
 
-    // Spawn 3 Senior Executives in the stationary arena
-    const positions = [
-      { x: 740, y: GAME_CONFIG.groundY - 70 },
-      { x: 810, y: GAME_CONFIG.groundY - 70 },
-      { x: 880, y: GAME_CONFIG.groundY - 70 }
-    ];
+    this.l3DeptIndex = deptIndex;
+    const dept = depts[deptIndex];
 
-    seConfigs.forEach((cfg, idx) => {
-      const pos = positions[idx] || { x: 760 + idx * 50, y: GAME_CONFIG.groundY - 70 };
-      const se = new ArenaSeniorExec(cfg, pos.x, pos.y);
-      this.l3Enemies.push(se);
-      this.game.enemies.push(se);
+    // Pop up every department name before their enemies come
+    this.showAnnouncement(dept.name, "Senior Executives Duel", dept.themeColor || "#9b5de5", 1.8, () => {
+      this.l3Enemies = [];
+      const seList = dept.seniorExecutives || [];
+      const positions = [
+        { x: 740, y: GAME_CONFIG.groundY - 70 },
+        { x: 830, y: GAME_CONFIG.groundY - 70 }
+      ];
+
+      seList.forEach((cfg, idx) => {
+        const enemyCfg = Object.assign({}, cfg, { deptName: dept.name, color: dept.themeColor });
+        const pos = positions[idx] || { x: 750 + idx * 70, y: GAME_CONFIG.groundY - 70 };
+        const se = new ArenaSeniorExec(enemyCfg, pos.x, pos.y);
+        this.l3Enemies.push(se);
+        this.game.enemies.push(se);
+      });
+
+      this.game.ui.updateHUD();
     });
   }
 
-  initLevel4Bosses() {
-    this.l4Bosses = [];
-    const bossConfigs = GAME_CONFIG.levels[4].bosses;
+  // --- LEVEL 4: Executive Board (Wave by department with department name popup) ---
+  spawnLevel4DeptWave(deptIndex) {
+    const ebList = GAME_CONFIG.executiveBoardMembers;
+    if (deptIndex >= ebList.length) {
+      // All 7 EB Directors cleared!
+      this.game.triggerPromotion(4);
+      return;
+    }
 
-    // Stagger all 4 GB bosses in combat positions simultaneously
+    this.l4DeptIndex = deptIndex;
+    const ebCfg = ebList[deptIndex];
+
+    // Pop up every department name before their enemies come
+    this.showAnnouncement(ebCfg.deptName, "Executive Board Member", ebCfg.color || "#e056fd", 1.8, () => {
+      this.l4Enemies = [];
+      const pos = { x: 770, y: GAME_CONFIG.groundY - 72 };
+      const eb = new ArenaExecBoard(ebCfg, pos.x, pos.y);
+      this.l4Enemies.push(eb);
+      this.game.enemies.push(eb);
+      this.game.ui.updateHUD();
+    });
+  }
+
+  // --- LEVEL 5: All 4 Governing Body Leaders Simultaneously ---
+  initLevel5Bosses() {
+    this.l5Bosses = [];
+    const bossConfigs = GAME_CONFIG.levels[5].bosses;
+
     const positions = [
-      { x: 700, y: GAME_CONFIG.groundY - 76 }, // President
-      { x: 770, y: GAME_CONFIG.groundY - 76 }, // Vice President
-      { x: 840, y: GAME_CONFIG.groundY - 76 }, // General Secretary
-      { x: 910, y: GAME_CONFIG.groundY - 76 }  // Treasurer
+      { x: 700, y: GAME_CONFIG.groundY - 76 }, // President (Jauad Ahmed Sadik)
+      { x: 770, y: GAME_CONFIG.groundY - 76 }, // Vice President (Shudeepta Roy Mou)
+      { x: 840, y: GAME_CONFIG.groundY - 76 }, // General Secretary (G M JUBAYER ZAMAN)
+      { x: 910, y: GAME_CONFIG.groundY - 76 }  // Treasurer (Syed Adnan Rahman)
     ];
 
     bossConfigs.forEach((cfg, idx) => {
       const pos = positions[idx];
       const boss = new GoverningBodyBoss(cfg, pos.x, pos.y);
-      this.l4Bosses.push(boss);
+      this.l5Bosses.push(boss);
       this.game.enemies.push(boss);
     });
+
+    Sounds.playAlarm();
+    this.game.ui.updateHUD();
   }
 
   update(dt) {
+    // Handle active announcement timer
+    if (this.isAnnouncing) {
+      this.announcementTimer -= dt;
+      if (this.announcementTimer <= 0) {
+        this.isAnnouncing = false;
+        this.game.ui.hideAnnouncement();
+        if (this.announcementCallback) {
+          const cb = this.announcementCallback;
+          this.announcementCallback = null;
+          cb();
+        }
+      }
+      return;
+    }
+
     if (this.currentLevel === 1) {
       this.updateLevel1(dt);
     } else if (this.currentLevel === 2) {
@@ -146,6 +258,8 @@ class LevelManager {
       this.updateLevel3(dt);
     } else if (this.currentLevel === 4) {
       this.updateLevel4(dt);
+    } else if (this.currentLevel === 5) {
+      this.updateLevel5(dt);
     }
 
     // Update floating coins (Level 2)
@@ -154,16 +268,18 @@ class LevelManager {
 
   // --- LEVEL 1 UPDATE ---
   updateLevel1(dt) {
+    if (this.isAnnouncing) return;
+
     this.l1SpawnTimer -= dt;
 
-    // Spawn 7 Runner GMs in sequence
+    // Spawn 7 Runner GMs in sequence, 1 per department
     if (this.l1SpawnTimer <= 0 && this.l1SpawnedCount < this.l1TargetDodges) {
-      const speed = GAME_CONFIG.levels[1].speed + Math.random() * 30;
+      const speed = GAME_CONFIG.levels[1].speed + Math.random() * 25;
       const gmList = GAME_CONFIG.gmMembers;
       const gmInfo = gmList[this.l1SpawnedCount % gmList.length];
       this.game.enemies.push(new RunnerGM(speed, gmInfo));
       this.l1SpawnedCount++;
-      this.l1SpawnTimer = 1.8 + Math.random() * 0.8;
+      this.l1SpawnTimer = 1.9 + Math.random() * 0.6;
     }
 
     // Check dodged GMs
@@ -186,29 +302,25 @@ class LevelManager {
 
   // --- LEVEL 2 UPDATE ---
   updateLevel2(dt) {
+    if (this.isAnnouncing) return;
+
     this.l2SpawnTimer -= dt;
     this.l2CoinSpawnTimer -= dt;
 
-    // Spawn Department Executives across 7 departments (2 per department = 14 Executives total)
+    // Spawn Department Executives across 7 departments consecutively
     if (this.l2SpawnTimer <= 0 && this.l2DodgedTotal < this.l2TargetTotal) {
       const depts = GAME_CONFIG.departments;
       const dept = depts[this.l2DeptIndex % depts.length];
       const execList = dept.executives;
-      const memberInfo = execList[this.l2ExecIndex % execList.length];
+      const memberInfo = execList[0] || { name: dept.name, title: "Executive" };
 
       // High gun probability (85% chance) requiring tactical shield blocking
       const hasGun = Math.random() < 0.85;
-      const speed = GAME_CONFIG.levels[2].speed + Math.random() * 30;
+      const speed = GAME_CONFIG.levels[2].speed + Math.random() * 25;
 
       this.game.enemies.push(new DepartmentExec(speed, dept, memberInfo, hasGun));
-
-      this.l2ExecIndex++;
-      if (this.l2ExecIndex >= execList.length) {
-        this.l2ExecIndex = 0;
-        this.l2DeptIndex++;
-      }
-
-      this.l2SpawnTimer = 1.6 + Math.random() * 0.8;
+      this.l2DeptIndex++;
+      this.l2SpawnTimer = 1.8 + Math.random() * 0.6;
     }
 
     // Spawn bonus coins at varying heights along the run
@@ -239,7 +351,7 @@ class LevelManager {
         this.game.player.addCoins(GAME_CONFIG.levels[2].coinPerDodge, this.game.particles, enemy.x + 10, enemy.y);
         this.game.ui.updateHUD();
 
-        // Level 2 Clear Condition: Complete dodging all departmental waves (21 executives)
+        // Level 2 Clear Condition: Complete dodging all 7 departmental executives
         if (this.l2DodgedTotal >= this.l2TargetTotal) {
           this.game.triggerStoreIntermission();
           return;
@@ -277,36 +389,53 @@ class LevelManager {
     }
   }
 
-  // --- LEVEL 3 UPDATE (Arena Duel vs 3 Senior Execs) ---
+  // --- LEVEL 3 UPDATE (Arena Duel vs 14 Senior Execs across 7 departments) ---
   updateLevel3(dt) {
-    let aliveCount = 0;
-    for (const se of this.l3Enemies) {
-      if (!se.isDead) {
-        aliveCount++;
+    if (this.isAnnouncing) return;
+
+    if (this.l3Enemies.length > 0) {
+      const alive = this.l3Enemies.filter(e => !e.isDead);
+      if (alive.length === 0) {
+        // Current department's 2 SEs defeated!
+        this.game.enemies = this.game.enemies.filter(e => !(e instanceof ArenaSeniorExec && e.isDead));
+        this.l3DefeatedCount += this.l3Enemies.length;
+        this.l3Enemies = [];
+        this.spawnLevel3DeptWave(this.l3DeptIndex + 1);
       }
-    }
-
-    this.l3DefeatedCount = this.l3Enemies.length - aliveCount;
-
-    // Clear condition: Eliminate all 3 SEs
-    if (aliveCount === 0 && this.l3Enemies.length > 0) {
-      this.game.triggerPromotion(3);
     }
   }
 
-  // --- LEVEL 4 UPDATE (The Final Stand vs 4 GB Bosses) ---
+  // --- LEVEL 4 UPDATE (Arena Duel vs 7 EB Directors across 7 departments) ---
   updateLevel4(dt) {
+    if (this.isAnnouncing) return;
+
+    if (this.l4Enemies.length > 0) {
+      const alive = this.l4Enemies.filter(e => !e.isDead);
+      if (alive.length === 0) {
+        // Current department's EB Director defeated!
+        this.game.enemies = this.game.enemies.filter(e => !(e instanceof ArenaExecBoard && e.isDead));
+        this.l4DefeatedCount += this.l4Enemies.length;
+        this.l4Enemies = [];
+        this.spawnLevel4DeptWave(this.l4DeptIndex + 1);
+      }
+    }
+  }
+
+  // --- LEVEL 5 UPDATE (The Final Stand vs 4 GB Bosses) ---
+  updateLevel5(dt) {
+    if (this.isAnnouncing) return;
+
     let aliveCount = 0;
-    for (const boss of this.l4Bosses) {
+    for (const boss of this.l5Bosses) {
       if (!boss.isDead) {
         aliveCount++;
       }
     }
 
-    this.l4DefeatedCount = this.l4Bosses.length - aliveCount;
+    this.l5DefeatedCount = this.l5Bosses.length - aliveCount;
 
     // Victory condition: Defeat all 4 GB members
-    if (aliveCount === 0 && this.l4Bosses.length > 0) {
+    if (aliveCount === 0 && this.l5Bosses.length > 0) {
       this.game.triggerVictory();
     }
   }

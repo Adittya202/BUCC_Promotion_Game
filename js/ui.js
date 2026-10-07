@@ -28,6 +28,12 @@ class UIManager {
     this.hudCooldownText = document.getElementById("hudCooldownText");
     this.bossHudOverlay = document.getElementById("bossHudOverlay");
 
+    // Announcement elements
+    this.announcementPopup = document.getElementById("announcementPopup");
+    this.announcementCard = document.getElementById("announcementCard");
+    this.announcementTitle = document.getElementById("announcementTitle");
+    this.announcementSub = document.getElementById("announcementSub");
+
     // Screens / Modals
     this.startScreen = document.getElementById("startScreen");
     this.promotionModal = document.getElementById("promotionModal");
@@ -167,9 +173,34 @@ class UIManager {
       score: this.game.score,
       coins: this.game.player.coins,
       rank: "Governing Body Leader",
-      level_reached: 4,
+      level_reached: 5,
       victory: true
     });
+  }
+
+  showAnnouncement(title, subtitle, color = "#00f0ff") {
+    if (!this.announcementPopup || !this.announcementTitle) return;
+
+    this.announcementTitle.innerText = title;
+    if (this.announcementSub) {
+      this.announcementSub.innerText = subtitle || "";
+    }
+
+    if (this.announcementCard) {
+      this.announcementCard.style.setProperty("--announcement-color", color);
+      this.announcementCard.style.setProperty("--announcement-glow", color + "80");
+      this.announcementCard.style.animation = "none";
+      this.announcementCard.offsetHeight; // trigger reflow
+      this.announcementCard.style.animation = "";
+    }
+
+    this.announcementPopup.classList.remove("hidden");
+  }
+
+  hideAnnouncement() {
+    if (this.announcementPopup) {
+      this.announcementPopup.classList.add("hidden");
+    }
   }
 
   hideAllModals() {
@@ -183,6 +214,7 @@ class UIManager {
     screens.forEach((s) => {
       if (s) s.classList.add("hidden");
     });
+    this.hideAnnouncement();
   }
 
   updateHUD() {
@@ -231,19 +263,29 @@ class UIManager {
     } else if (lvl === 2) {
       const depts = GAME_CONFIG.departments;
       const currentDept = depts[lm.l2DeptIndex % depts.length];
-      this.hudObjTitle.innerText = `STAGE 2: ${currentDept ? currentDept.name : "DEPT"} TRIAL`;
+      this.hudObjTitle.innerText = `STAGE 2: EXECUTIVE RUNNER`;
       this.hudObjDetail.innerText = `Execs Dodged: ${lm.l2DodgedTotal} / ${lm.l2TargetTotal}`;
       this.hudWeaponWidget.style.display = "none";
       this.bossHudOverlay.style.display = "none";
     } else if (lvl === 3) {
-      this.hudObjTitle.innerText = "STAGE 3: ARENA DUEL";
-      this.hudObjDetail.innerText = `SEs Defeated: ${lm.l3DefeatedCount} / 3`;
+      const depts = GAME_CONFIG.departments;
+      const dept = depts[lm.l3DeptIndex] || depts[0];
+      this.hudObjTitle.innerText = "STAGE 3: SENIOR EXECUTIVES";
+      this.hudObjDetail.innerText = `${dept.name} (${Math.min(7, lm.l3DeptIndex + 1)}/7) • Defeated: ${lm.l3DefeatedCount} / 14`;
       this.hudWeaponWidget.style.display = "flex";
       this.bossHudOverlay.style.display = "none";
       this.updateWeaponWidget();
     } else if (lvl === 4) {
-      this.hudObjTitle.innerText = "STAGE 4: THE FINAL STAND";
-      this.hudObjDetail.innerText = `GB Leaders Defeated: ${lm.l4DefeatedCount} / 4`;
+      const ebs = GAME_CONFIG.executiveBoardMembers;
+      const eb = ebs[lm.l4DeptIndex] || ebs[0];
+      this.hudObjTitle.innerText = "STAGE 4: EXECUTIVE BOARD";
+      this.hudObjDetail.innerText = `${eb.deptName} (${Math.min(7, lm.l4DeptIndex + 1)}/7) • Defeated: ${lm.l4DefeatedCount} / 7`;
+      this.hudWeaponWidget.style.display = "flex";
+      this.bossHudOverlay.style.display = "none";
+      this.updateWeaponWidget();
+    } else if (lvl === 5) {
+      this.hudObjTitle.innerText = "STAGE 5: GOVERNING BODY APEX";
+      this.hudObjDetail.innerText = `GB Leaders Defeated: ${lm.l5DefeatedCount} / 4`;
       this.hudWeaponWidget.style.display = "flex";
       this.bossHudOverlay.style.display = "flex";
       this.updateWeaponWidget();
@@ -268,7 +310,7 @@ class UIManager {
 
   updateBossHudOverlay() {
     const lm = this.game.levelManager;
-    const bosses = lm.l4Bosses;
+    const bosses = lm.l5Bosses || [];
     let html = "";
 
     bosses.forEach((b) => {

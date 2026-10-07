@@ -12,39 +12,59 @@ Start as a humble **General Member (GM)** and rise through the club's ranks by s
 
 1. **Stage 1: GM to Executive (Classic Endless Runner Trials)**
    - **Role**: General Member (GM).
-   - **Mechanics**: Auto-running rightward. Jump (`Spacebar` or `Up Arrow` / Click) to clear fellow GMs approaching at ground level.
-   - **Enemies**: **7 distinct named GM candidates** (`GM Tanvir`, `GM Sadia`, `GM Rayan`, `GM Lamia`, `GM Faisal`, `GM Tasnim`, `GM Nafis`).
-   - **Rewards**: Each dodged GM awards **+1 Coin**.
-   - **Promotion**: Dodge **7 GMs** to trigger promotion: `"Congratulations, You have been promoted from GM to Executive!"`.
+   - **Announcement**: `"General Members are coming"` banner alert precedes the wave.
+   - **Mechanics**: Auto-running rightward. Jump (`Spacebar` or `Up Arrow` / Click) to clear fellow GMs.
+   - **Enemies**: **7 enemies** representing the 7 official BUCC departments consecutively (*C&M, Creative, Event Management, Finance, PR, HR, R&D*), with department names written above each enemy's head.
+   - **Promotion**: Dodge **7 GMs** to earn promotion to **Executive**.
 
 2. **Stage 2: Executive to Senior Executive (7 BUCC Department Gauntlet)**
    - **Role**: Executive.
-   - **Enemies**: The 7 official BUCC departments (*Creative, C&M, Event Management, Finance, HR, PR, R&D*), featuring **14 Senior Executives** (**2 from each department**) alongside departmental executives.
-   - **Mechanics**: Executives and Senior Executives approach the player. Certain members wield firearms and shoot high-velocity bullets towards the player.
-   - **Rewards**: Dodging an executive awards **+3 Coins**. Floating gold coins also spawn at varying heights along the run.
-   - **Completion**: Dodge 14 departmental executives & senior executives to enter **The Promotion Store**.
+   - **Announcement**: `"Executives are coming"` banner alert precedes the wave.
+   - **Enemies**: **7 Department Executives** consecutively (*C&M, Creative, Event Management, Finance, PR, HR, R&D*), with department names written above their heads similar to General Members.
+   - **Mechanics**: Armed executives fire high-velocity suppression rounds; hold `Right Click` to block with the Holographic Shield.
+   - **Completion**: Dodge 7 department executives to enter **The Promotion Store**.
 
 3. **Intermission: The Promotion Store**
-   - Spend collected coins to upgrade your tactical arsenal before arena combat:
-     - **Standard Pistol** (Default/Free): 16 Damage, 0.5s Cooldown, Velocity 720.
-     - **Rapid Blaster** (25 Coins): 24 Damage, 0.35s Cooldown, Velocity 900.
-     - **Heavy Cannon** (50 Coins): 55 Damage, 0.5s Cooldown, Velocity 620.
-   - Equip owned weapons and advance to Level 3.
+   - Spend collected coins to upgrade weapons before entering the arena:
+     - **Standard Pistol** (Free): 16 Damage, 0.5s Cooldown, Velocity 720.
+     - **Rapid Blaster** (50 Coins): 26 Damage, 0.35s Cooldown, Velocity 950.
+     - **Heavy Cannon** (90 Coins): 60 Damage, 0.5s Cooldown, Velocity 680.
 
-4. **Stage 3: Senior Executive to Executive Board (Stationary Arena Duel)**
+4. **Stage 3: Senior Executive Arena Duel (14 Senior Executives)**
    - **Role**: Senior Executive.
-   - **Mechanics**: Auto-running stops; transitions into a stationary arena shooter.
-   - **Controls**: Aim with mouse cursor, shoot with `Left Click` or `F` key (strict 0.5s cooldown). Maneuver with `A`/`D` or `Left`/`Right` arrow keys and jump with `Spacebar` to dodge incoming bullets.
-   - **Objective**: Defeat 3 Senior Executives with active HP bars to earn promotion to **Executive Board (EB)**!
+   - **Announcement**: `"Senior executives are coming"` announcement at the start.
+   - **Department Announcements**: Before each department's wave, that department's name pops up (*C&M, Creative, Event Management, Finance, PR, HR, R&D*).
+   - **Enemies**: **14 Senior Executives** (2 per department) with names displayed above their heads:
+     - **C&M**: Md. Ishtiaq Mozumder, S.M.Abrar Shaleheen
+     - **Creative**: MD. Mushfiqur Rahman, Mahajabin Islam
+     - **Event Management**: Fahim Faysal, Fahim Al Razy
+     - **Finance**: Arnab, Raisa
+     - **PR**: Tanisha, Shovon Pr
+     - **HR**: Adittya, Subrajit
+     - **R&D**: Mahir Dyan, Siam Ferdous
+   - **Promotion**: Defeat all 14 Senior Executives to earn promotion to **Executive Board (EB)**!
 
-5. **Stage 4: The Final Stand — EB to Governing Body (Apex Boss Battle)**
+5. **Stage 4: Executive Board Trial (7 EB Directors)**
    - **Role**: Executive Board (EB).
-   - **Bosses**: Exactly **4 Governing Body (GB) members** entering simultaneously:
-     - **GB President**: High HP, 3-way spread energy bursts.
-     - **GB Vice President**: High HP, dual high-speed laser pulses.
-     - **GB General Secretary**: High HP, bouncing orb projectile.
-     - **GB Treasurer**: High HP, golden cluster coin barrage.
-   - **Victory Condition**: Eliminate all 4 GB bosses to win the game and claim club leadership as **Governing Body President**!
+   - **Announcement**: `"Executive Board Members are coming"`, followed by department popups before each director enters:
+     - **C&M**: Zawad Bhai
+     - **Creative**: Luban Bhai
+     - **Event Management**: Rafi Bhai
+     - **Finance**: Rawnak Bhai
+     - **HR**: Kabya Apu
+     - **PR**: Anika Apu
+     - **R&D**: Abir Bhai
+   - **Promotion**: Defeat all 7 EB Directors to qualify for Governing Body Trials!
+
+6. **Stage 5: The Final Stand — Governing Body (Apex Boss Battle)**
+   - **Role**: Executive Board Champion.
+   - **Announcement**: `"All four Governing Body members will come together"`.
+   - **Bosses**: Exactly **4 Governing Body members entering simultaneously**:
+     - **Jauad Ahmed Sadik** (President): High HP, 3-way spread energy bursts.
+     - **Shudeepta Roy Mou** (Vice President): High HP, dual high-speed laser pulses.
+     - **G M JUBAYER ZAMAN** (General Secretary): High HP, bouncing energy orb.
+     - **Syed Adnan Rahman** (Treasurer): High HP, cluster coin barrage.
+   - **Victory Condition**: Eliminate all 4 GB leaders to win and claim club leadership as **Governing Body President**!
 
 ---
 

@@ -245,7 +245,7 @@ class GameEngine {
       const enemy = this.enemies[i];
       if (enemy instanceof DepartmentExec) {
         enemy.update(dt, this.bullets, this.player, this.particles);
-      } else if (enemy instanceof ArenaSeniorExec || enemy instanceof GoverningBodyBoss) {
+      } else if (enemy instanceof ArenaSeniorExec || enemy instanceof ArenaExecBoard || enemy instanceof GoverningBodyBoss) {
         enemy.update(dt, this.bullets, this.player, this.particles);
       } else {
         enemy.update(dt);
@@ -286,9 +286,9 @@ class GameEngine {
 
       // Check bullet collisions
       if (b.isPlayer) {
-        // Player bullet hits enemy (Level 3 & 4)
+        // Player bullet hits enemy (Level 3, 4, 5)
         for (const enemy of this.enemies) {
-          if (!enemy.isDead && (enemy instanceof ArenaSeniorExec || enemy instanceof GoverningBodyBoss)) {
+          if (!enemy.isDead && (enemy instanceof ArenaSeniorExec || enemy instanceof ArenaExecBoard || enemy instanceof GoverningBodyBoss)) {
             if (this.checkCircleBoxCollision(b, enemy)) {
               enemy.takeDamage(b.damage, this.particles);
               this.score += b.damage * 10;
@@ -357,7 +357,7 @@ class GameEngine {
 
     // 3. Draw Enemies
     for (const enemy of this.enemies) {
-      if (!enemy.isDead || (enemy instanceof ArenaSeniorExec || enemy instanceof GoverningBodyBoss)) {
+      if (!enemy.isDead || (enemy instanceof ArenaSeniorExec || enemy instanceof ArenaExecBoard || enemy instanceof GoverningBodyBoss)) {
         enemy.draw(this.ctx);
       }
     }

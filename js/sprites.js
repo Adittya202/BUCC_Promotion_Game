@@ -20,13 +20,18 @@ const SpriteRenderer = {
   drawBackground(ctx, width, height, currentLevel = 1) {
     // 1. Sky Gradient
     const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-    if (currentLevel === 4) {
-      // Crimson boss arena sky
+    if (currentLevel === 5) {
+      // Crimson boss arena sky (Level 5 GB Apex)
       skyGrad.addColorStop(0, "#1a030c");
       skyGrad.addColorStop(0.6, "#2e0818");
       skyGrad.addColorStop(1, "#0d0208");
+    } else if (currentLevel === 4) {
+      // Deep cyber magenta (Level 4 EB Directors)
+      skyGrad.addColorStop(0, "#17061f");
+      skyGrad.addColorStop(0.6, "#2b0a38");
+      skyGrad.addColorStop(1, "#0d0312");
     } else if (currentLevel === 3) {
-      // Deep purple arena sky
+      // Deep purple arena sky (Level 3 Senior Execs)
       skyGrad.addColorStop(0, "#0c051a");
       skyGrad.addColorStop(0.6, "#1f0d3d");
       skyGrad.addColorStop(1, "#080410");
@@ -52,7 +57,7 @@ const SpriteRenderer = {
 
     // 3. Far BRACU Campus Silhouette (UB Building / Towers)
     ctx.save();
-    ctx.fillStyle = currentLevel === 4 ? "#1f0d1b" : "#0c1733";
+    ctx.fillStyle = currentLevel === 5 ? "#1f0d1b" : (currentLevel === 4 ? "#180c26" : "#0c1733");
     const skyX = -this.bgOffsetSkyline;
     for (let loop = 0; loop < 2; loop++) {
       const baseX = skyX + loop * width;
@@ -71,7 +76,7 @@ const SpriteRenderer = {
       ctx.fillRect(baseX + 860, height - 310, 80, 230);
 
       // Lit Windows Matrix
-      ctx.fillStyle = currentLevel === 4 ? "rgba(255, 100, 120, 0.35)" : "rgba(0, 240, 255, 0.25)";
+      ctx.fillStyle = currentLevel >= 4 ? "rgba(255, 100, 120, 0.35)" : "rgba(0, 240, 255, 0.25)";
       for (let w = 0; w < 40; w++) {
         const wx = baseX + 70 + (w % 8) * 120;
         const wy = height - 220 + Math.floor(w / 8) * 25;
@@ -79,7 +84,7 @@ const SpriteRenderer = {
           ctx.fillRect(wx, wy, 4, 6);
         }
       }
-      ctx.fillStyle = currentLevel === 4 ? "#1f0d1b" : "#0c1733";
+      ctx.fillStyle = currentLevel === 5 ? "#1f0d1b" : (currentLevel === 4 ? "#180c26" : "#0c1733");
     }
     ctx.restore();
 
@@ -101,17 +106,18 @@ const SpriteRenderer = {
       const signX = bx + 480;
       const signY = height - 180;
       ctx.fillStyle = "rgba(10, 20, 45, 0.85)";
-      ctx.strokeStyle = currentLevel === 4 ? "#ff0055" : "#00f0ff";
+      ctx.strokeStyle = currentLevel === 5 ? "#ff0055" : (currentLevel === 4 ? "#e056fd" : "#00f0ff");
       ctx.lineWidth = 1.5;
       ctx.strokeRect(signX, signY, 150, 42);
       ctx.fillRect(signX, signY, 150, 42);
 
       ctx.font = "bold 12px 'Orbitron', sans-serif";
-      ctx.fillStyle = currentLevel === 4 ? "#ff5e7e" : "#00f0ff";
+      ctx.fillStyle = currentLevel === 5 ? "#ff5e7e" : (currentLevel === 4 ? "#e056fd" : "#00f0ff");
       ctx.shadowColor = ctx.fillStyle;
       ctx.shadowBlur = 8;
       ctx.textAlign = "center";
-      ctx.fillText(currentLevel === 4 ? "GB APEX ARENA" : "BUCC CAMPUS", signX + 75, signY + 22);
+      const signTitle = currentLevel === 5 ? "GB APEX ARENA" : (currentLevel === 4 ? "EB DIRECTORS" : "BUCC CAMPUS");
+      ctx.fillText(signTitle, signX + 75, signY + 22);
 
       ctx.font = "bold 8px 'Rajdhani', sans-serif";
       ctx.fillStyle = "#ffd166";
@@ -133,7 +139,7 @@ const SpriteRenderer = {
 
     // Glowing Top Border Line
     ctx.save();
-    ctx.strokeStyle = currentLevel === 4 ? "#ff0055" : "#00f0ff";
+    ctx.strokeStyle = currentLevel === 5 ? "#ff0055" : (currentLevel === 4 ? "#e056fd" : "#00f0ff");
     ctx.lineWidth = 3;
     ctx.shadowColor = ctx.strokeStyle;
     ctx.shadowBlur = 10;
@@ -465,18 +471,19 @@ const SpriteRenderer = {
     ctx.arc(0, -56, 9, Math.PI, Math.PI * 2);
     ctx.fill();
 
-    // "GM" Tag and Candidate Name
-    ctx.fillStyle = "#38bdf8";
-    ctx.font = "bold 9px 'Orbitron', sans-serif";
+    // "GM" Tag and Candidate Department Name
+    const deptDisplayName = gm.deptName || "C&M";
+    ctx.fillStyle = gm.color || "#00f0ff";
+    ctx.font = "bold 13px 'Orbitron', sans-serif";
     ctx.textAlign = "center";
-    ctx.shadowColor = "#38bdf8";
-    ctx.shadowBlur = 6;
-    ctx.fillText("GM MEMBER", 0, -78);
+    ctx.shadowColor = gm.color || "#00f0ff";
+    ctx.shadowBlur = 8;
+    ctx.fillText(deptDisplayName, 0, -76);
 
     ctx.font = "bold 8px 'Rajdhani', sans-serif";
     ctx.fillStyle = "#ffffff";
     ctx.shadowBlur = 0;
-    ctx.fillText(gm.name || "Candidate", 0, -68);
+    ctx.fillText("GENERAL MEMBER", 0, -65);
 
     ctx.restore();
   },
@@ -486,7 +493,7 @@ const SpriteRenderer = {
     ctx.save();
     ctx.translate(x + width / 2, y + height);
 
-    const themeColor = dept.themeColor || "#ff9f1c";
+    const themeColor = (dept && dept.themeColor) || exec.color || "#ff9f1c";
     const runCycle = Math.sin(animTimer * 14);
 
     // Shadow
@@ -533,20 +540,20 @@ const SpriteRenderer = {
       ctx.shadowBlur = 0;
     }
 
-    // Floating Name, Rank & Department Badge
+    // Overhead Department name similar as general members
+    const deptDisplayName = exec.deptName || (dept && dept.name) || "C&M";
     ctx.save();
-    ctx.font = "bold 9px 'Orbitron', sans-serif";
+    ctx.font = "bold 13px 'Orbitron', sans-serif";
     ctx.fillStyle = themeColor;
     ctx.shadowColor = themeColor;
-    ctx.shadowBlur = 6;
+    ctx.shadowBlur = 8;
     ctx.textAlign = "center";
-    const rankLabel = exec.rank === "Senior Executive" ? "SR. EXEC" : "EXEC";
-    ctx.fillText(`${dept.name} • ${rankLabel}`, 0, -76);
+    ctx.fillText(deptDisplayName, 0, -76);
 
     ctx.font = "bold 8px 'Rajdhani', sans-serif";
     ctx.fillStyle = "#ffffff";
     ctx.shadowBlur = 0;
-    ctx.fillText(`${name} (${exec.title || ""})`, 0, -66);
+    ctx.fillText("EXECUTIVE", 0, -65);
     ctx.restore();
 
     ctx.restore();
@@ -610,14 +617,95 @@ const SpriteRenderer = {
     ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
     ctx.strokeRect(-barW / 2, -88, barW, 6);
 
-    ctx.font = "bold 9px 'Orbitron', sans-serif";
+    ctx.font = "bold 10.5px 'Orbitron', sans-serif";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
+    ctx.shadowColor = color || "#00f0ff";
+    ctx.shadowBlur = 6;
     ctx.fillText(name, 0, -96);
 
-    ctx.font = "bold 7.5px 'Rajdhani', sans-serif";
+    ctx.font = "bold 8px 'Rajdhani', sans-serif";
     ctx.fillStyle = color || "#ffd166";
-    ctx.fillText(title, 0, -107);
+    ctx.shadowBlur = 0;
+    ctx.fillText((se.deptName || "Senior Executive") + " • SR. EXEC", 0, -107);
+
+    ctx.restore();
+  },
+
+  drawArenaExecBoard(ctx, eb) {
+    const { x, y, width, height, hp, maxHp, name, title, color } = eb;
+    ctx.save();
+    ctx.translate(x + width / 2, y + height);
+
+    // Shadow
+    ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 24, 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Tactical suit legs
+    ctx.fillStyle = "#070a12";
+    ctx.fillRect(-10, -28, 7, 28);
+    ctx.fillRect(3, -28, 7, 28);
+
+    // Torso with dark tailored EB Director coat
+    ctx.fillStyle = "#180f28";
+    ctx.beginPath();
+    ctx.roundRect(-16, -60, 32, 34, 5);
+    ctx.fill();
+
+    // Gold trim & Director collar
+    ctx.strokeStyle = color || "#ffd166";
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(-13, -58, 26, 28);
+
+    // Epaulettes
+    ctx.fillStyle = "#ffd166";
+    ctx.fillRect(-18, -60, 5, 8);
+    ctx.fillRect(13, -60, 5, 8);
+
+    // Head
+    ctx.fillStyle = "#fcd5ce";
+    ctx.beginPath();
+    ctx.arc(0, -70, 11, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Hair
+    ctx.fillStyle = "#111827";
+    ctx.beginPath();
+    ctx.arc(0, -72, 11, Math.PI, Math.PI * 2);
+    ctx.fill();
+
+    // Gun aimed at player
+    ctx.fillStyle = "#1e293b";
+    ctx.fillRect(-28, -50, 18, 8);
+    ctx.fillStyle = color || "#e056fd";
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.shadowBlur = 8;
+    ctx.fillRect(-32, -49, 7, 4);
+    ctx.shadowBlur = 0;
+
+    // HP Bar & Name plate above head
+    const hpPercent = Math.max(0, hp / maxHp);
+    const barW = 68;
+    ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.fillRect(-barW / 2, -92, barW, 7);
+    ctx.fillStyle = color || "#e056fd";
+    ctx.fillRect(-barW / 2, -92, barW * hpPercent, 7);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+    ctx.strokeRect(-barW / 2, -92, barW, 7);
+
+    ctx.font = "bold 11px 'Orbitron', sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.shadowColor = color || "#e056fd";
+    ctx.shadowBlur = 6;
+    ctx.fillText(name, 0, -102);
+
+    ctx.font = "bold 8.5px 'Rajdhani', sans-serif";
+    ctx.fillStyle = color || "#ffd166";
+    ctx.shadowBlur = 0;
+    ctx.fillText((eb.deptName || "Executive Board") + " • EB DIRECTOR", 0, -113);
 
     ctx.restore();
   },
@@ -709,13 +797,16 @@ const SpriteRenderer = {
     ctx.strokeRect(-barW / 2, -100, barW, 8);
 
     // Title & Name
-    ctx.font = "bold 9.5px 'Orbitron', sans-serif";
+    ctx.font = "bold 10.5px 'Orbitron', sans-serif";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
+    ctx.shadowColor = color || "#ffd166";
+    ctx.shadowBlur = 6;
     ctx.fillText(name, 0, -110);
 
-    ctx.font = "bold 7.5px 'Rajdhani', sans-serif";
+    ctx.font = "bold 8px 'Rajdhani', sans-serif";
     ctx.fillStyle = "#ffd166";
+    ctx.shadowBlur = 0;
     ctx.fillText(title, 0, -121);
 
     ctx.restore();

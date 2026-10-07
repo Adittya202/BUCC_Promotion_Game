@@ -47,137 +47,137 @@ const GAME_CONFIG = {
   },
 
   // Exactly 7 General Members (Level 1)
+  // Exactly 7 General Members (Level 1) - One per department consecutively
   gmMembers: [
-    { name: "GM Tanvir Rookie", title: "Freshman Member" },
-    { name: "GM Sadia Python", title: "Code Apprentice" },
-    { name: "GM Rayan Hardware", title: "Lab Trainee" },
-    { name: "GM Lamia Algorist", title: "Problem Solver" },
-    { name: "GM Faisal Frontend", title: "Web Novice" },
-    { name: "GM Tasnim Git", title: "Version Control Trainee" },
-    { name: "GM Nafis Creative", title: "Junior Designer" }
+    { name: "C&M Member", deptName: "C&M", color: "#ff9f1c", title: "General Member" },
+    { name: "Creative Member", deptName: "Creative", color: "#ff2a85", title: "General Member" },
+    { name: "Event Mgmt Member", deptName: "Event Management", color: "#2ec4b6", title: "General Member" },
+    { name: "Finance Member", deptName: "Finance", color: "#ffd166", title: "General Member" },
+    { name: "PR Member", deptName: "PR", color: "#00b4d8", title: "General Member" },
+    { name: "HR Member", deptName: "HR", color: "#9b5de5", title: "General Member" },
+    { name: "R&D Member", deptName: "R&D", color: "#00f5d4", title: "General Member" }
   ],
 
-  // 7 BUCC Departments
-  // Exactly 2 Executives per department = 14 Executives Total
-  // Exactly 2 Senior Executives per department = 14 Senior Executives Total
+  // 7 BUCC Departments in user-specified consecutive order:
+  // C&M, Creative, Event Management, Finance, PR, HR, R&D
   departments: [
     {
-      id: "creative",
-      name: "Creative",
-      themeColor: "#ff2a85",
-      accentColor: "#ff70a6",
-      executives: [
-        { name: "Abrar Design", title: "Visual Director", rank: "Executive" },
-        { name: "Farzana Canvas", title: "Illustrator Exec", rank: "Executive" }
-      ],
-      seniorExecutives: [
-        { name: "Tanha Aesthetics", title: "Sr. Exec Visual Arts", rank: "Senior Executive" },
-        { name: "Fahim Layout", title: "Sr. Exec Publications", rank: "Senior Executive" }
-      ]
-    },
-    {
       id: "cm",
-      name: "Communication & Marketing (C&M)",
+      name: "C&M",
+      fullName: "Communication & Marketing (C&M)",
       themeColor: "#ff9f1c",
       accentColor: "#ffbf69",
       executives: [
-        { name: "Tahmid Outreach", title: "C&M Lead Exec", rank: "Executive" },
-        { name: "Sarah Campaign", title: "Content Strategist", rank: "Executive" }
+        { name: "Tahmid", title: "Officer", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Arif Engage", title: "Sr. Exec Communications", rank: "Senior Executive" },
-        { name: "Tasnia Promo", title: "Sr. Exec Brand Outreach", rank: "Senior Executive" }
+        { name: "Md. Ishtiaq Mozumder", title: "Sr. Exec C&M", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 },
+        { name: "S.M.Abrar Shaleheen", title: "Sr. Exec C&M", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 }
+      ]
+    },
+    {
+      id: "creative",
+      name: "Creative",
+      fullName: "Creative",
+      themeColor: "#ff2a85",
+      accentColor: "#ff70a6",
+      executives: [
+        { name: "Abrar", title: "Visual Designer", rank: "Executive" }
+      ],
+      seniorExecutives: [
+        { name: "MD. Mushfiqur Rahman", title: "Sr. Exec Creative", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 },
+        { name: "Mahajabin Islam", title: "Sr. Exec Creative", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 }
       ]
     },
     {
       id: "em",
       name: "Event Management",
+      fullName: "Event Management",
       themeColor: "#2ec4b6",
       accentColor: "#cbf3f0",
       executives: [
-        { name: "Tanvir Logistics", title: "Venue Coordinator", rank: "Executive" },
-        { name: "Sadia Stage", title: "Protocol Officer", rank: "Executive" }
+        { name: "Tanvir", title: "Logistics Officer", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Shakil Decor", title: "Sr. Exec Stage & Venue", rank: "Senior Executive" },
-        { name: "Ishraq Planner", title: "Sr. Exec Event Logistics", rank: "Senior Executive" }
+        { name: "Fahim Faysal", title: "Sr. Exec Event Mgmt", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 },
+        { name: "Fahim Al Razy", title: "Sr. Exec Event Mgmt", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 }
       ]
     },
     {
       id: "finance",
       name: "Finance",
+      fullName: "Finance",
       themeColor: "#ffd166",
       accentColor: "#ffe494",
       executives: [
-        { name: "Shakil Ledger", title: "Budget Master", rank: "Executive" },
-        { name: "Nafisa Audit", title: "Treasury Officer", rank: "Executive" }
+        { name: "Shakil", title: "Treasury Officer", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Faisal Fiscal", title: "Sr. Exec Treasury", rank: "Senior Executive" },
-        { name: "Samira Audit", title: "Sr. Exec Financial Compliance", rank: "Senior Executive" }
-      ]
-    },
-    {
-      id: "hr",
-      name: "Human Resources (HR)",
-      themeColor: "#9b5de5",
-      accentColor: "#b388ff",
-      executives: [
-        { name: "Tasnim Recruiter", title: "Talent Acquisition", rank: "Executive" },
-        { name: "Arif Personnel", title: "Member Relations", rank: "Executive" }
-      ],
-      seniorExecutives: [
-        { name: "Nayeem Talent", title: "Sr. Exec HR Operations", rank: "Senior Executive" },
-        { name: "Sabrina Mentor", title: "Sr. Exec Member Development", rank: "Senior Executive" }
+        { name: "Arnab", title: "Sr. Exec Finance", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 },
+        { name: "Raisa", title: "Sr. Exec Finance", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 }
       ]
     },
     {
       id: "pr",
-      name: "Public Relations (PR)",
+      name: "PR",
+      fullName: "Public Relations (PR)",
       themeColor: "#00b4d8",
       accentColor: "#90e0ef",
       executives: [
-        { name: "Rafid Diplomat", title: "Club Spokesperson", rank: "Executive" },
-        { name: "Samira Press", title: "External Liaison", rank: "Executive" }
+        { name: "Rafid", title: "Liaison Officer", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Arham Emissary", title: "Sr. Exec External Relations", rank: "Senior Executive" },
-        { name: "Shreya Press", title: "Sr. Exec Media Relations", rank: "Senior Executive" }
+        { name: "Tanisha", title: "Sr. Exec PR", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 },
+        { name: "Shovon Pr", title: "Sr. Exec PR", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 }
+      ]
+    },
+    {
+      id: "hr",
+      name: "HR",
+      fullName: "Human Resources (HR)",
+      themeColor: "#9b5de5",
+      accentColor: "#b388ff",
+      executives: [
+        { name: "Tasnim", title: "Talent Officer", rank: "Executive" }
+      ],
+      seniorExecutives: [
+        { name: "Adittya", title: "Sr. Exec HR", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 460 },
+        { name: "Subrajit", title: "Sr. Exec HR", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 470 }
       ]
     },
     {
       id: "rnd",
-      name: "Research & Development (R&D)",
+      name: "R&D",
+      fullName: "Research & Development (R&D)",
       themeColor: "#00f5d4",
       accentColor: "#7bf1a8",
       executives: [
-        { name: "Adittya Dev", title: "Core Systems Architect", rank: "Executive" },
-        { name: "Mahir Kernel", title: "Full-Stack Specialist", rank: "Executive" }
+        { name: "Dev", title: "Tech Specialist", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Emon Backend", title: "Sr. Exec Software Engineering", rank: "Senior Executive" },
-        { name: "Towhid Frontend", title: "Sr. Exec Web Technologies", rank: "Senior Executive" }
+        { name: "Mahir Dyan", title: "Sr. Exec R&D", rank: "Senior Executive", hp: 60, fireRate: 1.8, speed: 470 },
+        { name: "Siam Ferdous", title: "Sr. Exec R&D", rank: "Senior Executive", hp: 60, fireRate: 1.7, speed: 480 }
       ]
     }
   ],
 
-  // Exactly 7 Executive Board (EB) Members (1 from each department)
+  // Exactly 7 Executive Board (EB) Members (1 from each department as listed by user)
   executiveBoardMembers: [
-    { name: "Director Sabrina Chroma", dept: "Creative", title: "EB Creative Director", color: "#ff2a85" },
-    { name: "Director Rayhan Growth", dept: "C&M", title: "EB Strategic Outreach Lead", color: "#ff9f1c" },
-    { name: "Director Tanjim Protocol", dept: "Event Management", title: "EB Event Operations Lead", color: "#2ec4b6" },
-    { name: "Director Rehan Forecast", dept: "Finance", title: "EB Treasury Director", color: "#ffd166" },
-    { name: "Director Tariq Ethics", dept: "Human Resources", title: "EB Governance & HR Lead", color: "#9b5de5" },
-    { name: "Director Riasat Envoy", dept: "Public Relations", title: "EB Corporate Relations Director", color: "#00b4d8" },
-    { name: "Director Nazmul Cloud", dept: "Research & Development", title: "EB Technology Director", color: "#00f5d4" }
+    { name: "Zawad Bhai", dept: "C&M", deptName: "C&M", title: "EB C&M Director", hp: 85, color: "#ff9f1c", fireRate: 1.6, speed: 480 },
+    { name: "Luban Bhai", dept: "Creative", deptName: "Creative", title: "EB Creative Director", hp: 85, color: "#ff2a85", fireRate: 1.5, speed: 490 },
+    { name: "Rafi Bhai", dept: "Event Management", deptName: "Event Management", title: "EB Event Operations Director", hp: 85, color: "#2ec4b6", fireRate: 1.6, speed: 480 },
+    { name: "Rawnak Bhai", dept: "Finance", deptName: "Finance", title: "EB Treasury Director", hp: 85, color: "#ffd166", fireRate: 1.5, speed: 500 },
+    { name: "Kabya Apu", dept: "HR", deptName: "HR", title: "EB Governance & HR Director", hp: 85, color: "#9b5de5", fireRate: 1.6, speed: 480 },
+    { name: "Anika Apu", dept: "PR", deptName: "PR", title: "EB PR Director", hp: 85, color: "#00b4d8", fireRate: 1.5, speed: 490 },
+    { name: "Abir Bhai", dept: "R&D", deptName: "R&D", title: "EB Technology Director", hp: 90, color: "#00f5d4", fireRate: 1.4, speed: 510 }
   ],
 
-  // Exactly 4 Governing Body (GB) Members (All 4 together in Level 4)
+  // Exactly 4 Governing Body (GB) Members (All 4 together in the last level)
   governingBody: [
     {
       id: "gb_president",
-      name: "GB President",
-      title: "Supreme Club Commander",
+      name: "Jauad Ahmed Sadik",
+      title: "President",
       hp: 240,
       color: "#ff0055",
       pattern: "spread",
@@ -186,8 +186,8 @@ const GAME_CONFIG = {
     },
     {
       id: "gb_vp",
-      name: "GB Vice President",
-      title: "Vice President Strategy",
+      name: "Shudeepta Roy Mou",
+      title: "Vice President",
       hp: 210,
       color: "#00d2ff",
       pattern: "dual_burst",
@@ -196,8 +196,8 @@ const GAME_CONFIG = {
     },
     {
       id: "gb_gs",
-      name: "GB General Secretary",
-      title: "General Secretary Ops",
+      name: "G M JUBAYER ZAMAN",
+      title: "General Secretary",
       hp: 190,
       color: "#a855f7",
       pattern: "bouncing_orb",
@@ -206,10 +206,10 @@ const GAME_CONFIG = {
     },
     {
       id: "gb_treasurer",
-      name: "GB Treasurer",
-      title: "Treasurer Vaultmaster",
+      name: "Syed Adnan Rahman",
+      title: "Treasurer",
       hp: 180,
-      color: "#eab308",
+      color: "#ffd166",
       pattern: "cluster_barrage",
       fireRate: 2.0,
       bulletSpeed: 500
@@ -256,55 +256,63 @@ const GAME_CONFIG = {
     }
   },
 
-  // Level Progression Configuration
+  // Level Progression Configuration (5 Levels)
   levels: {
     1: {
       id: 1,
       title: "Level 1: GM to Executive",
       subtitle: "Classic Endless Runner Trials",
-      targetDodges: 7, // Exactly 7 GMs total
+      announcement: "General Members are coming",
+      targetDodges: 7, // Exactly 7 GMs total (1 from each department consecutively)
       coinPerDodge: 1,
       speed: 310,
       playerRank: "GM",
-      nextRank: "Executive",
+      nextRank: "EXECUTIVE",
       promotionMessage: "Congratulations, You have been promoted from GM to Executive!"
     },
     2: {
       id: 2,
       title: "Level 2: Executive to Senior Executive",
       subtitle: "7 BUCC Department Gauntlet & High-Velocity Fire",
-      targetDodges: 14, // 14 Department encounters (Executives & Sr. Execs)
+      announcement: "Executives are coming",
+      targetDodges: 7, // Exactly 7 Department Executives consecutively
       coinPerDodge: 4,
       speed: 360,
-      playerRank: "Executive",
-      nextRank: "Senior Executive",
+      playerRank: "EXECUTIVE",
+      nextRank: "SENIOR_EXECUTIVE",
       promotionMessage: "Outstanding! You cleared all department trials and advanced to Senior Executive!"
     },
     3: {
       id: 3,
       title: "Level 3: Senior Executive to Executive Board (EB)",
-      subtitle: "Stationary Arena Duel vs 3 Senior Executives",
-      playerRank: "Senior Executive",
-      nextRank: "Executive Board",
-      promotionMessage: "Promoted to Executive Board (EB)!",
-      enemies: [
-        { name: "Sr. Exec Emon", title: "R&D Software Lead", hp: 130, fireRate: 1.6, speed: 460, color: "#00f5d4" },
-        { name: "Sr. Exec Shakil", title: "Event Venue Maestro", hp: 145, fireRate: 1.4, speed: 480, color: "#2ec4b6" },
-        { name: "Sr. Exec Arif", title: "C&M Strategy Veteran", hp: 160, fireRate: 1.3, speed: 500, color: "#ff9f1c" }
-      ]
+      subtitle: "Stationary Arena Duel vs 14 Senior Executives",
+      announcement: "Senior executives are coming",
+      playerRank: "SENIOR_EXECUTIVE",
+      nextRank: "EXECUTIVE_BOARD",
+      promotionMessage: "Promoted to Executive Board (EB)!"
     },
     4: {
       id: 4,
-      title: "Level 4: The Final Stand — EB to Governing Body (GB)",
-      subtitle: "Apex Boss Battle: 4 Governing Body Members Simultaneously",
-      playerRank: "Executive Board",
-      nextRank: "Governing Body Leader",
+      title: "Level 4: Executive Board Trial",
+      subtitle: "Stationary Arena Duel vs 7 Executive Board Directors",
+      announcement: "Executive Board Members are coming",
+      playerRank: "EXECUTIVE_BOARD",
+      nextRank: "GOVERNING_BODY",
+      promotionMessage: "Outstanding! You conquered the Executive Board! Qualified for Governing Body Trials!"
+    },
+    5: {
+      id: 5,
+      title: "Level 5: The Final Stand — Governing Body (GB)",
+      subtitle: "Apex Boss Battle: All 4 Governing Body Members Simultaneously",
+      announcement: "Governing Body Members are coming",
+      playerRank: "EXECUTIVE_BOARD",
+      nextRank: "GOVERNING_BODY",
       promotionMessage: "VICTORY! You defeated all 4 Governing Body Leaders and claimed BUCC Leadership!",
       bosses: [
         {
           id: "gb_president",
-          name: "GB President",
-          title: "Supreme Club Commander",
+          name: "Jauad Ahmed Sadik",
+          title: "President",
           hp: 240,
           color: "#ff0055",
           pattern: "spread",
@@ -313,8 +321,8 @@ const GAME_CONFIG = {
         },
         {
           id: "gb_vp",
-          name: "GB Vice President",
-          title: "Vice President Strategy",
+          name: "Shudeepta Roy Mou",
+          title: "Vice President",
           hp: 210,
           color: "#00d2ff",
           pattern: "dual_burst",
@@ -323,8 +331,8 @@ const GAME_CONFIG = {
         },
         {
           id: "gb_gs",
-          name: "GB General Secretary",
-          title: "General Secretary Ops",
+          name: "G M JUBAYER ZAMAN",
+          title: "General Secretary",
           hp: 190,
           color: "#a855f7",
           pattern: "bouncing_orb",
@@ -333,10 +341,10 @@ const GAME_CONFIG = {
         },
         {
           id: "gb_treasurer",
-          name: "GB Treasurer",
-          title: "Treasurer Vaultmaster",
+          name: "Syed Adnan Rahman",
+          title: "Treasurer",
           hp: 180,
-          color: "#eab308",
+          color: "#ffd166",
           pattern: "cluster_barrage",
           fireRate: 2.0,
           bulletSpeed: 500
