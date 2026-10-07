@@ -282,6 +282,21 @@ class GameEngine {
         } else {
           b.vy += 350 * dt; // gravity on orb
         }
+      } else if (b.pattern === "flare") {
+        // Flare flight physics: realistic trajectory loft and crackling flame sparks
+        b.vy += 45 * dt;
+        if (Math.random() < 0.45 && this.particles) {
+          this.particles.spawnHitSparks(b.x + (Math.random() - 0.5) * 8, b.y + (Math.random() - 0.5) * 8, "#ff6b00");
+        }
+        // Flare hits ground
+        if (b.y >= GAME_CONFIG.groundY - b.radius) {
+          if (this.particles) {
+            this.particles.spawnHitSparks(b.x, GAME_CONFIG.groundY, "#ff3d00");
+            this.particles.spawnHitSparks(b.x, GAME_CONFIG.groundY, "#ffd166");
+          }
+          this.bullets.splice(i, 1);
+          continue;
+        }
       }
 
       // Check bullet collisions
@@ -308,8 +323,12 @@ class GameEngine {
             height: this.player.height + 28
           };
           if (this.checkCircleBoxCollision(b, shieldBox) || this.checkCircleBoxCollision(b, this.player)) {
-            // Shield intercepts and blocks the upcoming bullet!
+            // Shield intercepts and blocks the upcoming bullet/flare!
             this.player.absorbBulletDamage(b.damage, this.particles);
+            if (b.pattern === "flare" && this.particles) {
+              this.particles.spawnHitSparks(b.x, b.y, "#ff3d00");
+              this.particles.spawnHitSparks(b.x, b.y, "#ffd166");
+            }
             this.bullets.splice(i, 1);
             this.ui.updateHUD();
             continue;

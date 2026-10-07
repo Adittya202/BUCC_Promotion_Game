@@ -19,6 +19,7 @@ global.Sounds = {
   playJump: () => {},
   playShoot: () => {},
   playEnemyShoot: () => {},
+  playFlare: () => {},
   playHit: () => {},
   playCoin: () => {},
   playAnnouncement: () => {},
@@ -135,6 +136,20 @@ for (let d = 0; d < 7; d++) {
   lm.update(2.0); // dept announcement finishes, spawns 2 SEs
   console.assert(lm.l3Enemies.length === 2, `2 SEs spawned for dept ${expectedDepts[d]}`);
   console.log(`Dept ${expectedDepts[d]} SE 1: "${lm.l3Enemies[0].name}", SE 2: "${lm.l3Enemies[1].name}"`);
+  
+  if (expectedDepts[d] === "HR") {
+    console.assert(lm.l3Enemies[0].name === "Adittya", "SE 1 is Adittya");
+    console.assert(lm.l3Enemies[0].hp >= 120, `Adittya has increased HP (got ${lm.l3Enemies[0].hp})`);
+    console.assert(lm.l3Enemies[0].scale >= 1.3, `Adittya has increased scale (got ${lm.l3Enemies[0].scale})`);
+    console.assert(lm.l3Enemies[0].height > 70, `Adittya is bigger in height (got ${lm.l3Enemies[0].height})`);
+    
+    console.assert(lm.l3Enemies[1].name === "Subrajit", "SE 2 is Subrajit");
+    console.assert(lm.l3Enemies[1].hp >= 120, `Subrajit has increased HP (got ${lm.l3Enemies[1].hp})`);
+    console.assert(lm.l3Enemies[1].scale >= 1.3, `Subrajit has increased scale (got ${lm.l3Enemies[1].scale})`);
+    console.assert(lm.l3Enemies[1].height > 70, `Subrajit is bigger in height (got ${lm.l3Enemies[1].height})`);
+    console.log("  -> [VERIFIED] Adittya & Subrajit are bigger in size with higher health level!");
+  }
+
   // Defeat both
   lm.l3Enemies[0].isDead = true;
   lm.l3Enemies[1].isDead = true;
@@ -156,9 +171,25 @@ for (let d = 0; d < 7; d++) {
   console.assert(lm.isAnnouncing === true, `EB dept ${d + 1} popup is active`);
   lm.update(2.0);
   console.assert(lm.l4Enemies.length === 1, `1 EB Director spawned for dept ${expectedDepts[d]}`);
-  console.log(`EB Director #${d + 1}: "${lm.l4Enemies[0].name}" (Expected: "${expectedEBs[d]}")`);
-  console.assert(lm.l4Enemies[0].name === expectedEBs[d], `EB Director name matches`);
-  lm.l4Enemies[0].isDead = true;
+  const eb = lm.l4Enemies[0];
+  console.log(`EB Director #${d + 1}: "${eb.name}" (Expected: "${expectedEBs[d]}")`);
+  console.assert(eb.name === expectedEBs[d], `EB Director name matches`);
+  console.assert(eb.bulletSpeed >= 720, `EB bullet speed is increased (got ${eb.bulletSpeed})`);
+
+  // Test firing
+  mockGame.bullets = [];
+  eb.fireBullet(mockGame.bullets, mockGame.player, null);
+  console.assert(mockGame.bullets.length >= 3, `EB fires multiple bullets per attack (got ${mockGame.bullets.length})`);
+
+  if (eb.name === "Kabya Apu") {
+    console.assert(eb.hasFireGun === true, "Kabya Apu has Fire Gun enabled");
+    console.assert(eb.scale >= 1.3, `Kabya Apu is bigger in size (got ${eb.scale})`);
+    console.assert(eb.height > 72, `Kabya Apu height is larger (got ${eb.height})`);
+    console.assert(mockGame.bullets[0].pattern === "flare", `Kabya Apu throws flairs instead of bullets (pattern: ${mockGame.bullets[0].pattern})`);
+    console.log("  -> [VERIFIED] Kabya Apu has Fire Gun, bigger size, and throws flairs!");
+  }
+
+  eb.isDead = true;
   lm.update(0.1);
 }
 console.assert(lm.l4DefeatedCount === 7, `Defeated all 7 EB Directors, got ${lm.l4DefeatedCount}`);

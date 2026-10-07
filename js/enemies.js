@@ -121,10 +121,11 @@ class DepartmentExec {
 // 3. Level 3: Arena Senior Executive
 class ArenaSeniorExec {
   constructor(config, posX, posY) {
-    this.width = 38;
-    this.height = 70;
+    this.scale = config.scale || 1.0;
+    this.width = Math.round(38 * this.scale);
+    this.height = Math.round(70 * this.scale);
     this.x = posX || 740;
-    this.y = posY || (GAME_CONFIG.groundY - this.height);
+    this.y = GAME_CONFIG.groundY - this.height;
     this.name = config.name;
     this.title = config.title || "Senior Executive";
     this.deptName = config.deptName || "Department";
@@ -132,7 +133,7 @@ class ArenaSeniorExec {
     this.maxHp = config.hp || 60;
     this.color = config.color || "#9b5de5";
     this.fireRate = config.fireRate || 1.8;
-    this.bulletSpeed = 480; // Fast projectile speed towards player
+    this.bulletSpeed = config.bulletSpeed || 480; // Fast projectile speed towards player
     this.shootTimer = 0.8 + Math.random() * 1.0;
     this.isDead = false;
     this.hitFlashTimer = 0;
@@ -152,12 +153,12 @@ class ArenaSeniorExec {
 
   fireBullet(bullets, player, particles) {
     Sounds.playEnemyShoot();
-    const startX = this.x - 18;
-    const startY = this.y + 24;
+    const startX = this.x - Math.round(18 * this.scale);
+    const startY = this.y + Math.round(24 * this.scale);
 
     // Direct line of sight towards main player
     const targetX = player ? (player.x + player.width / 2) : 140;
-    const targetY = player ? (player.y + player.height / 2) : (this.y + 24);
+    const targetY = player ? (player.y + player.height / 2) : (this.y + 24 * this.scale);
 
     const dx = targetX - startX;
     const dy = targetY - startY;
@@ -169,7 +170,7 @@ class ArenaSeniorExec {
       vx: Math.cos(angle) * this.bulletSpeed,
       vy: Math.sin(angle) * this.bulletSpeed,
       damage: 18,
-      radius: 5,
+      radius: Math.round(5 * this.scale),
       color: this.color,
       isPlayer: false,
       pattern: "straight"
@@ -207,19 +208,21 @@ class ArenaSeniorExec {
 // 4. Level 4: Arena Executive Board Director
 class ArenaExecBoard {
   constructor(config, posX, posY) {
-    this.width = 40;
-    this.height = 72;
+    this.scale = config.scale || 1.0;
+    this.width = Math.round(40 * this.scale);
+    this.height = Math.round(72 * this.scale);
     this.x = posX || 770;
-    this.y = posY || (GAME_CONFIG.groundY - this.height);
+    this.y = GAME_CONFIG.groundY - this.height;
     this.name = config.name;
     this.title = config.title || "EB Director";
     this.deptName = config.deptName || config.dept || "Executive Board";
-    this.hp = config.hp || 85;
-    this.maxHp = config.hp || 85;
+    this.hp = config.hp || 90;
+    this.maxHp = config.hp || 90;
     this.color = config.color || "#e056fd";
-    this.fireRate = config.fireRate || 1.5;
-    this.bulletSpeed = 500;
-    this.shootTimer = 0.8 + Math.random() * 0.8;
+    this.fireRate = config.fireRate || 1.1;
+    this.bulletSpeed = config.bulletSpeed || 750; // High speed bullets
+    this.hasFireGun = !!config.hasFireGun;
+    this.shootTimer = 0.7 + Math.random() * 0.6;
     this.isDead = false;
     this.hitFlashTimer = 0;
   }
@@ -231,37 +234,67 @@ class ArenaExecBoard {
     }
 
     if (this.shootTimer <= 0 && this.hp > 0) {
-      this.shootTimer = this.fireRate + Math.random() * 0.4;
+      this.shootTimer = this.fireRate + Math.random() * 0.35;
       this.fireBullet(bullets, player, particles);
     }
   }
 
   fireBullet(bullets, player, particles) {
-    Sounds.playEnemyShoot();
-    const startX = this.x - 20;
-    const startY = this.y + 24;
+    const startX = this.x - Math.round(24 * this.scale);
+    const startY = this.y + Math.round(26 * this.scale);
 
     const targetX = player ? (player.x + player.width / 2) : 140;
-    const targetY = player ? (player.y + player.height / 2) : (this.y + 24);
+    const targetY = player ? (player.y + player.height / 2) : (this.y + 26 * this.scale);
 
     const dx = targetX - startX;
     const dy = targetY - startY;
-    const angle = Math.atan2(dy, dx);
+    const baseAngle = Math.atan2(dy, dx);
 
-    bullets.push({
-      x: startX,
-      y: startY,
-      vx: Math.cos(angle) * this.bulletSpeed,
-      vy: Math.sin(angle) * this.bulletSpeed,
-      damage: 20,
-      radius: 6,
-      color: this.color,
-      isPlayer: false,
-      pattern: "straight"
-    });
+    if (this.hasFireGun) {
+      // Kabya Apu: Fire gun throws blazing flares instead of bullets!
+      Sounds.playFlare();
+      const flareAngles = [-0.15, 0, 0.15]; // Throws a 3-flare fan barrage
+      flareAngles.forEach(offsetAngle => {
+        const angle = baseAngle + offsetAngle;
+        bullets.push({
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * this.bulletSpeed,
+          vy: Math.sin(angle) * this.bulletSpeed - 25, // realistic flare loft
+          damage: 22,
+          radius: 8,
+          color: "#ff5722",
+          isPlayer: false,
+          pattern: "flare"
+        });
+      });
 
-    if (particles) {
-      particles.spawnMuzzleFlash(startX, startY, this.color);
+      if (particles) {
+        particles.spawnMuzzleFlash(startX, startY, "#ff3d00");
+        particles.spawnHitSparks(startX - 10, startY, "#ffdd00");
+      }
+    } else {
+      // Executive Board Directors: High-speed multi-bullet barrage (3 bullets per volley)
+      Sounds.playEnemyShoot();
+      const spreadAngles = [-0.16, 0, 0.16];
+      spreadAngles.forEach(offsetAngle => {
+        const angle = baseAngle + offsetAngle;
+        bullets.push({
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * this.bulletSpeed,
+          vy: Math.sin(angle) * this.bulletSpeed,
+          damage: 20,
+          radius: 6,
+          color: this.color,
+          isPlayer: false,
+          pattern: "straight"
+        });
+      });
+
+      if (particles) {
+        particles.spawnMuzzleFlash(startX, startY, this.color);
+      }
     }
   }
 

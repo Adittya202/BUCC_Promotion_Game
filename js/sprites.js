@@ -563,6 +563,9 @@ const SpriteRenderer = {
     const { x, y, width, height, hp, maxHp, name, title, color } = se;
     ctx.save();
     ctx.translate(x + width / 2, y + height);
+    if (se.scale && se.scale !== 1.0) {
+      ctx.scale(se.scale, se.scale);
+    }
 
     // Shadow
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -636,6 +639,9 @@ const SpriteRenderer = {
     const { x, y, width, height, hp, maxHp, name, title, color } = eb;
     ctx.save();
     ctx.translate(x + width / 2, y + height);
+    if (eb.scale && eb.scale !== 1.0) {
+      ctx.scale(eb.scale, eb.scale);
+    }
 
     // Shadow
     ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
@@ -676,14 +682,63 @@ const SpriteRenderer = {
     ctx.arc(0, -72, 11, Math.PI, Math.PI * 2);
     ctx.fill();
 
-    // Gun aimed at player
-    ctx.fillStyle = "#1e293b";
-    ctx.fillRect(-28, -50, 18, 8);
-    ctx.fillStyle = color || "#e056fd";
-    ctx.shadowColor = ctx.fillStyle;
-    ctx.shadowBlur = 8;
-    ctx.fillRect(-32, -49, 7, 4);
-    ctx.shadowBlur = 0;
+    // Weapon aimed at player
+    if (eb.hasFireGun) {
+      // Custom Fire Gun for Kabya Apu (Flare launcher / heavy flame thrower)
+      ctx.save();
+      // Main gun barrel & chassis
+      ctx.fillStyle = "#2d160f";
+      ctx.fillRect(-36, -55, 24, 13);
+      ctx.strokeStyle = "#ff5722";
+      ctx.lineWidth = 1.8;
+      ctx.strokeRect(-36, -55, 24, 13);
+
+      // Crimson fuel canister mounted beneath the barrel
+      ctx.fillStyle = "#d00000";
+      ctx.beginPath();
+      ctx.roundRect(-24, -42, 15, 8, 3);
+      ctx.fill();
+      ctx.fillStyle = "#ffd166";
+      ctx.fillRect(-22, -39, 11, 2); // Fuel gauge level
+
+      // Heat-dissipation copper cooling fins
+      ctx.fillStyle = "#ff7b00";
+      ctx.fillRect(-32, -57, 3, 16);
+      ctx.fillRect(-26, -57, 3, 16);
+
+      // Flared heavy flame cannon nozzle
+      ctx.fillStyle = "#c1121f";
+      ctx.beginPath();
+      ctx.moveTo(-36, -57);
+      ctx.lineTo(-44, -59);
+      ctx.lineTo(-44, -39);
+      ctx.lineTo(-36, -41);
+      ctx.closePath();
+      ctx.fill();
+
+      // Flickering pilot flame jet at the nozzle tip
+      const flamePulse = Math.sin(Date.now() * 0.02) * 2;
+      ctx.shadowColor = "#ff3d00";
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = "#ffdd00";
+      ctx.beginPath();
+      ctx.arc(-47 + flamePulse, -49, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(-48 + flamePulse, -49, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    } else {
+      // Standard EB Director pistol
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(-28, -50, 18, 8);
+      ctx.fillStyle = color || "#e056fd";
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 8;
+      ctx.fillRect(-32, -49, 7, 4);
+      ctx.shadowBlur = 0;
+    }
 
     // HP Bar & Name plate above head
     const hpPercent = Math.max(0, hp / maxHp);
@@ -705,7 +760,8 @@ const SpriteRenderer = {
     ctx.font = "bold 8.5px 'Rajdhani', sans-serif";
     ctx.fillStyle = color || "#ffd166";
     ctx.shadowBlur = 0;
-    ctx.fillText((eb.deptName || "Executive Board") + " • EB DIRECTOR", 0, -113);
+    const subtitle = eb.hasFireGun ? "HR • FIRE GUN DIRECTOR" : ((eb.deptName || "Executive Board") + " • EB DIRECTOR");
+    ctx.fillText(subtitle, 0, -113);
 
     ctx.restore();
   },
@@ -828,7 +884,48 @@ const SpriteRenderer = {
     ctx.shadowBlur = 10;
     ctx.fillStyle = color || "#00f0ff";
 
-    if (pattern === "bouncing_orb") {
+    if (pattern === "flare") {
+      // Fiery Flare Projectile thrown from Kabya Apu's Fire Gun
+      const flameTime = Date.now() * 0.015;
+      const flicker = Math.sin(flameTime) * 1.8;
+      const flareR = (radius || 8) + flicker;
+
+      // 1. Intense Fiery Outer Glow
+      ctx.shadowColor = "#ff3d00";
+      ctx.shadowBlur = 18;
+
+      // 2. Trailing Flame Tail / Smoke Plume
+      const tailLength = flareR * 3.5;
+      const tailGrad = ctx.createLinearGradient(0, 0, tailLength, 0);
+      tailGrad.addColorStop(0, "rgba(255, 69, 0, 0.95)");
+      tailGrad.addColorStop(0.5, "rgba(255, 140, 0, 0.6)");
+      tailGrad.addColorStop(1, "rgba(255, 200, 0, 0)");
+      ctx.fillStyle = tailGrad;
+      ctx.beginPath();
+      ctx.moveTo(-flareR * 0.4, -flareR * 0.7);
+      ctx.lineTo(tailLength, 0); // Trails along flight vector
+      ctx.lineTo(-flareR * 0.4, flareR * 0.7);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Fiery Corona Core (Radial Gradient from white-hot center to searing flame)
+      const fireGrad = ctx.createRadialGradient(0, 0, 1.5, 0, 0, flareR);
+      fireGrad.addColorStop(0, "#ffffff"); // White-hot incandescent core
+      fireGrad.addColorStop(0.25, "#fff176"); // Sun yellow
+      fireGrad.addColorStop(0.65, "#ff6d00"); // Blazing orange
+      fireGrad.addColorStop(1, "rgba(208, 0, 0, 0.9)"); // Deep crimson outer corona
+      ctx.fillStyle = fireGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, flareR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. Flying Embers around the flare
+      ctx.fillStyle = "#ffe082";
+      ctx.beginPath();
+      ctx.arc(flareR * 1.2, Math.sin(flameTime * 2.2) * 2.5, 1.8, 0, Math.PI * 2);
+      ctx.arc(flareR * 2.0, Math.cos(flameTime * 2.8) * 3.5, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (pattern === "bouncing_orb") {
       ctx.beginPath();
       ctx.arc(0, 0, radius + 2, 0, Math.PI * 2);
       ctx.fill();

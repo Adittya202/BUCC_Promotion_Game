@@ -268,6 +268,59 @@ class SoundSystem {
     osc.stop(now + 0.17);
   }
 
+  playFlare() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.audioContext) return;
+
+    const ctx = this.audioContext;
+    const now = ctx.currentTime;
+
+    // Fiery flare ignition whoosh & flame sound
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(560, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.26);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.26);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.27);
+
+    // Crackle noise burst
+    try {
+      const bufferSize = Math.floor(ctx.sampleRate * 0.16);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.45));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(1400, now);
+      filter.Q.setValueAtTime(2.2, now);
+
+      const nGain = ctx.createGain();
+      nGain.gain.setValueAtTime(0.22, now);
+      nGain.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+
+      noise.connect(filter);
+      filter.connect(nGain);
+      nGain.connect(ctx.destination);
+      noise.start(now);
+    } catch (e) {
+      // Audio buffer fallback
+    }
+  }
+
   playHit() {
     if (this.isMuted) return;
     this.ensureAudioContext();
