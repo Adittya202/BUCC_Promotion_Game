@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         return ($b['score'] ?? 0) - ($a['score'] ?? 0);
     });
 
-    // Top 15 scores
-    $topScores = array_slice($scores, 0, 15);
+    // Top 5 scores
+    $topScores = array_slice($scores, 0, 5);
 
     echo json_encode([
         'status' => 'success',
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'message' => 'Score recorded successfully',
         'entry' => $newEntry,
         'leaderboard_rank' => $position,
-        'leaderboard' => array_slice($scores, 0, 10)
+        'leaderboard' => array_slice($scores, 0, 5)
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     exit();
 }

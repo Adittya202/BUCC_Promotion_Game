@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BUCC Dino Runner & Boss Shooter | BRAC University Computer Club</title>
-  <meta name="description" content="Arcade runner and boss shooter web game themed around the BRAC University Computer Club (BUCC) member promotional hierarchy.">
+  <meta name="description"
+    content="Arcade runner and boss shooter web game themed around the BRAC University Computer Club (BUCC) member promotional hierarchy.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="icon" type="image/svg+xml" href="assets/images/bucc-logo.svg">
 </head>
+
 <body>
 
   <!-- Background Music Audio Element -->
-  <audio id="bgmAudio" src="assets/audio/bgm.mp3" loop preload="auto"></audio>
+  <audio id="bgmAudio" loop preload="auto">
+    <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+    <source src="assets/audio/videoplayback%20(mp3cut.net).mp3" type="audio/mpeg">
+  </audio>
 
   <!-- Global Header -->
   <header class="site-header">
@@ -31,6 +39,12 @@
       </div>
     </div>
     <div class="header-controls">
+      <a href="leaderboard.html" class="nav-credit-btn nav-lb-btn" id="btnNavLeaderboard" title="View Top 5 Hall of Fame">
+        <span class="credit-icon">&#127942;</span> LEADERBOARD
+      </a>
+      <a href="credits.html" class="nav-credit-btn" id="btnNavCredits" title="View Developer Credits">
+        <span class="credit-icon">&#128104;&#8205;&#128187;</span> THE DEVELOPER
+      </a>
       <button class="icon-btn btn-toggle-mute" id="btnAudioMute" title="Toggle Sound" aria-label="Toggle Sound">
         <span class="icon">&#128266;</span>
       </button>
@@ -137,8 +151,11 @@
           </div>
 
           <div class="input-group start-input-group">
-            <label for="playerNameInput" class="input-label">Candidate Name</label>
-            <input type="text" id="playerNameInput" class="cyber-input start-input" placeholder="Enter your name" maxlength="24" value="BUCC Candidate">
+            <label for="playerNameInput" class="input-label">Candidate Name <span class="required-star">*</span></label>
+            <input type="text" id="playerNameInput" class="cyber-input start-input"
+              placeholder="Type your name to start..." maxlength="24" value="" autocomplete="off" required>
+            <div class="name-error-msg hidden" id="nameErrorMsg">&#9888; Please write your name before starting the
+              game!</div>
           </div>
 
           <div class="tutorial-row-compact">
@@ -159,6 +176,15 @@
           <button class="btn-cta btn-start-prominent" id="btnStartGame">
             <span class="play-icon">&#9658;</span> START GAME
           </button>
+
+          <div class="start-external-links-row">
+            <a href="leaderboard.html" class="btn-credits-start btn-lb-start" id="btnStartLeaderboard">
+              <span>&#127942;</span> TOP 5 LEADERBOARD
+            </a>
+            <a href="credits.html" class="btn-credits-start" id="btnStartCredits">
+              <span>&#9889;</span> THE DEVELOPER
+            </a>
+          </div>
         </div>
       </div>
 
@@ -166,7 +192,8 @@
       <div class="overlay-screen hidden" id="promotionModal">
         <div class="modal-card">
           <div class="modal-badge-wrapper">
-            <img src="assets/images/badges/exec-badge.svg" alt="Promoted Badge" class="modal-badge-large" id="promoBadgeImg">
+            <img src="assets/images/badges/exec-badge.svg" alt="Promoted Badge" class="modal-badge-large"
+              id="promoBadgeImg">
           </div>
           <h2 class="modal-title shimmer-text" id="promoTitle">PROMOTION EARNED!</h2>
           <div class="modal-subtitle" id="promoRankName">Executive</div>
@@ -228,6 +255,9 @@
           <button class="btn-cta btn-restart-game" id="btnRestartGameOver">
             <span>&#8635;</span> RESTART GAME
           </button>
+          <a href="leaderboard.html" class="btn-modal-lb">
+            <span>&#127942;</span> VIEW TOP 5 LEADERBOARD &rarr;
+          </a>
         </div>
       </div>
 
@@ -235,12 +265,15 @@
       <div class="overlay-screen hidden" id="victoryModal">
         <div class="modal-card">
           <div class="modal-badge-wrapper">
-            <img src="assets/images/badges/gb-badge.svg" alt="GB Badge" class="modal-badge-large" style="width: 90px; height: 90px;">
+            <img src="assets/images/badges/gb-badge.svg" alt="GB Badge" class="modal-badge-large"
+              style="width: 90px; height: 90px;">
           </div>
           <h2 class="modal-title shimmer-text" style="font-size: 1.65rem;">GOVERNING BODY ASCENSION!</h2>
-          <div class="modal-subtitle" style="color: var(--color-gold);">YOU DEFEATED ALL 4 GB LEADERS AND CLAIMED BUCC PRESIDENCY!</div>
+          <div class="modal-subtitle" style="color: var(--color-gold);">YOU DEFEATED ALL 4 GB LEADERS AND CLAIMED BUCC
+            PRESIDENCY!</div>
           <p class="modal-description">
-            Your leadership, tactical agility, and relentless dedication have brought you to the apex of BRAC University Computer Club!
+            Your leadership, tactical agility, and relentless dedication have brought you to the apex of BRAC University
+            Computer Club!
           </p>
 
           <div class="stats-summary-card">
@@ -261,36 +294,13 @@
           <button class="btn-cta btn-restart-game" id="btnRestartVictory">
             <span>&#9733;</span> PLAY AGAIN
           </button>
+          <a href="leaderboard.html" class="btn-modal-lb">
+            <span>&#127942;</span> VIEW TOP 5 LEADERBOARD &rarr;
+          </a>
         </div>
       </div>
 
     </div>
-
-    <!-- Leaderboard Section -->
-    <section class="leaderboard-section">
-      <div class="leaderboard-header">
-        <div class="leaderboard-title">
-          <span>&#127942;</span> BUCC HALL OF FAME LEADERBOARD
-        </div>
-        <div style="font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted);">
-          TOP CANDIDATES
-        </div>
-      </div>
-      <table class="leaderboard-table">
-        <thead>
-          <tr>
-            <th style="width: 12%;">Rank</th>
-            <th style="width: 38%;">Candidate Name</th>
-            <th style="width: 25%;">Promotion Rank</th>
-            <th style="width: 15%;">Score</th>
-            <th style="width: 10%;">Coins</th>
-          </tr>
-        </thead>
-        <tbody id="leaderboardBody">
-          <!-- Populated from API/localStorage -->
-        </tbody>
-      </table>
-    </section>
   </main>
 
   <!-- Site Footer -->
@@ -310,4 +320,5 @@
   <script src="js/ui.js"></script>
   <script src="js/game.js"></script>
 </body>
+
 </html>

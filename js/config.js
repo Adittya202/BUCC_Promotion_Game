@@ -141,8 +141,8 @@ const GAME_CONFIG = {
         { name: "Tasnim", title: "Talent Officer", rank: "Executive" }
       ],
       seniorExecutives: [
-        { name: "Adittya", title: "Sr. Exec HR", rank: "Senior Executive", hp: 130, scale: 1.35, fireRate: 1.5, speed: 480 },
-        { name: "Subrajit", title: "Sr. Exec HR", rank: "Senior Executive", hp: 130, scale: 1.35, fireRate: 1.5, speed: 480 }
+        { name: "Adittya", title: "Sr. Exec HR", rank: "Senior Executive", hp: 130, scale: 1.35, fireRate: 0.85, speed: 480 },
+        { name: "Subrajit", title: "Sr. Exec HR", rank: "Senior Executive", hp: 130, scale: 1.35, fireRate: 0.85, speed: 480 }
       ]
     },
     {
@@ -163,13 +163,13 @@ const GAME_CONFIG = {
 
   // Exactly 7 Executive Board (EB) Members (1 from each department as listed by user)
   executiveBoardMembers: [
-    { name: "Zawad Bhai", dept: "C&M", deptName: "C&M", title: "EB C&M Director", hp: 90, color: "#ff9f1c", fireRate: 1.1, bulletSpeed: 750 },
-    { name: "Luban Bhai", dept: "Creative", deptName: "Creative", title: "EB Creative Director", hp: 90, color: "#ff2a85", fireRate: 1.1, bulletSpeed: 750 },
-    { name: "Rafi Bhai", dept: "Event Management", deptName: "Event Management", title: "EB Event Operations Director", hp: 90, color: "#2ec4b6", fireRate: 1.1, bulletSpeed: 750 },
-    { name: "Rawnak Bhai", dept: "Finance", deptName: "Finance", title: "EB Treasury Director", hp: 90, color: "#ffd166", fireRate: 1.1, bulletSpeed: 750 },
-    { name: "Kabya Apu", dept: "HR", deptName: "HR", title: "EB Governance & HR Director", hp: 140, color: "#ff5722", fireRate: 1.0, bulletSpeed: 720, hasFireGun: true, scale: 1.35 },
-    { name: "Anika Apu", dept: "PR", deptName: "PR", title: "EB PR Director", hp: 90, color: "#00b4d8", fireRate: 1.1, bulletSpeed: 750 },
-    { name: "Abir Bhai", dept: "R&D", deptName: "R&D", title: "EB Technology Director", hp: 95, color: "#00f5d4", fireRate: 1.0, bulletSpeed: 780 }
+    { name: "Zawad Bhai", dept: "C&M", deptName: "C&M", title: "EB C&M Director", hp: 90, color: "#ff9f1c", fireRate: 0.75, bulletSpeed: 750 },
+    { name: "Luban Bhai", dept: "Creative", deptName: "Creative", title: "EB Creative Director", hp: 90, color: "#ff2a85", fireRate: 0.75, bulletSpeed: 750 },
+    { name: "Rafi Bhai", dept: "Event Management", deptName: "Event Management", title: "EB Event Operations Director", hp: 90, color: "#2ec4b6", fireRate: 0.75, bulletSpeed: 750 },
+    { name: "Rawnak Bhai", dept: "Finance", deptName: "Finance", title: "EB Treasury Director", hp: 90, color: "#ffd166", fireRate: 0.75, bulletSpeed: 750 },
+    { name: "Kabya Apu", dept: "HR", deptName: "HR", title: "EB Governance & HR Director", hp: 140, color: "#ff5722", fireRate: 0.7, bulletSpeed: 720, hasFireGun: true, scale: 1.35 },
+    { name: "Anika Apu", dept: "PR", deptName: "PR", title: "EB PR Director", hp: 90, color: "#00b4d8", fireRate: 0.75, bulletSpeed: 750 },
+    { name: "Abir Bhai", dept: "R&D", deptName: "R&D", title: "EB Technology Director", hp: 95, color: "#00f5d4", fireRate: 0.7, bulletSpeed: 780 }
   ],
 
   // Exactly 4 Governing Body (GB) Members (All 4 together in the last level)

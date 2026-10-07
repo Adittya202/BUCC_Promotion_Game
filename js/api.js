@@ -36,20 +36,17 @@ const ApiService = {
     const raw = localStorage.getItem("bucc_game_leaderboard");
     if (raw) {
       try {
-        return JSON.parse(raw);
+        let scores = JSON.parse(raw);
+        // Purge old mock seeded data if present
+        if (Array.isArray(scores)) {
+          scores = scores.filter(s => s && s.name && !s.id?.startsWith("score_seed_") && s.name !== "BUCC Rookie GM" && s.name !== "Mahir Coder" && s.name !== "Abrar Creative" && s.name !== "Tahmid C&M" && s.name !== "Adittya (R&D)");
+          return scores.slice(0, 5);
+        }
       } catch (e) {}
     }
 
-    // Default seeded leaderboard
-    const defaultScores = [
-      { name: "Adittya (R&D)", score: 12850, coins: 142, rank: "Governing Body Leader", created_at: "Today" },
-      { name: "Mahir Coder", score: 9800, coins: 98, rank: "Executive Board", created_at: "Today" },
-      { name: "Abrar Creative", score: 7650, coins: 75, rank: "Senior Executive", created_at: "Yesterday" },
-      { name: "Tahmid C&M", score: 5400, coins: 58, rank: "Executive", created_at: "Yesterday" },
-      { name: "BUCC Rookie GM", score: 2100, coins: 20, rank: "General Member", created_at: "2 days ago" }
-    ];
-    localStorage.setItem("bucc_game_leaderboard", JSON.stringify(defaultScores));
-    return defaultScores;
+    // Default: Clean start with no fake players
+    return [];
   },
 
   async submitScore(scoreData) {
@@ -72,21 +69,26 @@ const ApiService = {
     // LocalStorage fallback
     const scores = await this.getLeaderboard();
     const newEntry = {
-      name: scoreData.name || "BUCC Member",
+      name: scoreData.name || "BUCC Player",
       score: scoreData.score || 0,
       coins: scoreData.coins || 0,
       rank: scoreData.rank || "General Member",
       created_at: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
     scores.push(newEntry);
-    scores.sort((a, b) => b.score - a.score);
-    const trimmed = scores.slice(0, 15);
+    // Sort descending by score, then coins
+    scores.sort((a, b) => {
+      if (b.score === a.score) return (b.coins || 0) - (a.coins || 0);
+      return (b.score || 0) - (a.score || 0);
+    });
+    // Keep strictly top 5 in leaderboard
+    const trimmed = scores.slice(0, 5);
     localStorage.setItem("bucc_game_leaderboard", JSON.stringify(trimmed));
 
     const rankPos = trimmed.findIndex(s => s.name === newEntry.name && s.score === newEntry.score) + 1;
     return {
       status: "success",
-      leaderboard_rank: rankPos > 0 ? rankPos : trimmed.length,
+      leaderboard_rank: rankPos > 0 ? rankPos : (scores.length <= 5 ? scores.length : 999),
       leaderboard: trimmed
     };
   }

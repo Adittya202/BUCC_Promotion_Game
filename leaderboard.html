@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - BUCC Hall of Fame | BRAC University Computer Club</title>
+  <meta name="description" content="Top 5 Leaderboard and Hall of Fame for BRAC University Computer Club Promotion Trials.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/bucc-logo.svg">
+
+  <style>
+    /* Dedicated Leaderboard Page Styling */
+    body.leaderboard-page-body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: radial-gradient(circle at 50% 20%, #0c1a3a 0%, #040916 65%, #02040a 100%);
+      color: #ffffff;
+      font-family: 'Rajdhani', sans-serif;
+      padding: 24px 16px 20px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.leaderboard-page-body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .lb-nav-bar {
+      width: 100%;
+      max-width: 1060px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 20px;
+    }
+
+    .lb-nav-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lb-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(10, 20, 45, 0.75);
+      border: 1.5px solid var(--color-cyan);
+      color: var(--color-cyan);
+      padding: 9px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+    }
+
+    .lb-back-btn:hover {
+      background: var(--color-cyan);
+      color: #030712;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.7);
+      transform: translateX(-3px);
+    }
+
+    /* Main Container */
+    .lb-main-card {
+      width: 100%;
+      max-width: 1060px;
+      background: rgba(10, 18, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(0, 240, 255, 0.35);
+      border-radius: 18px;
+      padding: 32px 28px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+      box-shadow: 
+        0 0 35px rgba(0, 240, 255, 0.2),
+        0 25px 60px rgba(0, 0, 0, 0.9);
+      margin: auto 0;
+    }
+
+    .lb-header-wrap {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .lb-trophy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: linear-gradient(90deg, rgba(255, 209, 102, 0.2), rgba(255, 159, 28, 0.2));
+      border: 1px solid var(--color-gold);
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      color: var(--color-gold);
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px rgba(255, 209, 102, 0.3);
+    }
+
+    .lb-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin: 0 0 8px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--color-cyan) 60%, var(--color-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+    }
+
+    .lb-subtitle {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Podium Row for Top 3 */
+    .podium-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .podium-card {
+      background: rgba(15, 27, 60, 0.75);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .podium-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .podium-card.rank-1 {
+      border-color: var(--color-gold);
+      box-shadow: 0 0 24px rgba(255, 209, 102, 0.35);
+      background: linear-gradient(180deg, rgba(255, 209, 102, 0.15) 0%, rgba(15, 27, 60, 0.85) 100%);
+      order: 2;
+      transform: scale(1.04);
+    }
+    .podium-card.rank-1:hover {
+      transform: scale(1.04) translateY(-4px);
+    }
+    .podium-card.rank-2 {
+      border-color: #c0c0c0;
+      box-shadow: 0 0 16px rgba(192, 192, 192, 0.25);
+      order: 1;
+    }
+    .podium-card.rank-3 {
+      border-color: #cd7f32;
+      box-shadow: 0 0 16px rgba(205, 127, 50, 0.25);
+      order: 3;
+    }
+
+    .podium-medal {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+    }
+
+    .podium-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .podium-score {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--color-cyan);
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .podium-rank-tag {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Table Styling */
+    .lb-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      background: rgba(5, 11, 26, 0.6);
+    }
+
+    .lb-full-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .lb-full-table th {
+      background: rgba(10, 20, 48, 0.9);
+      color: var(--color-cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border-neon);
+      text-transform: uppercase;
+    }
+
+    .lb-full-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .lb-full-table tr:hover td {
+      background: rgba(0, 240, 255, 0.06);
+    }
+
+    .rank-cell-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .rank-cell-num.gold { color: var(--color-gold); }
+    .rank-cell-num.silver { color: #dcdcdc; }
+    .rank-cell-num.bronze { color: #d48b47; }
+    .rank-cell-num.cyan { color: var(--color-cyan); }
+
+    .score-cell-val {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+
+    .coins-cell-val {
+      color: var(--color-gold);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .empty-slot-text {
+      color: var(--text-muted);
+      font-style: italic;
+      font-weight: normal;
+    }
+
+    /* Actions below table */
+    .lb-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .lb-play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--color-cyan), #0077b6);
+      color: #030712;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    .lb-play-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+      background: var(--color-cyan);
+    }
+
+    .lb-dev-link {
+      color: var(--color-gold);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    .lb-dev-link:hover {
+      color: #ffffff;
+      text-shadow: 0 0 12px var(--color-gold);
+    }
+
+    .lb-footer-bar {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .podium-container {
+        grid-template-columns: 1fr;
+      }
+      .podium-card.rank-1 {
+        order: 1;
+        transform: none;
+      }
+      .podium-card.rank-2 { order: 2; }
+      .podium-card.rank-3 { order: 3; }
+      .lb-actions-row {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body class="leaderboard-page-body">
+
+  <!-- Navigation Bar -->
+  <header class="lb-nav-bar">
+    <a href="index.html" class="lb-back-btn">
+      <span>&#9668;</span> BACK TO GAME
+    </a>
+    <div class="lb-nav-group">
+      <a href="credits.html" class="nav-credit-btn" title="View Developer Credits">
+        <span class="credit-icon">&#128104;&#8205;&#128187;</span> THE DEVELOPER
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Card Container -->
+  <main class="lb-main-card">
+    <div class="lb-header-wrap">
+      <div class="lb-trophy-badge">
+        <span>&#127942;</span> TOP 5 CANDIDATES ONLY
+      </div>
+      <h1 class="lb-title">HALL OF FAME LEADERBOARD</h1>
+      <div class="lb-subtitle">BRAC University Computer Club • Member Promotion Trials</div>
+    </div>
+
+    <!-- Podium for Top 3 -->
+    <div class="podium-container" id="podiumContainer" style="display: none;">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+    <!-- Top 5 Full Table -->
+    <div class="lb-table-wrap">
+      <table class="lb-full-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Rank</th>
+            <th style="width: 36%;">Candidate Name</th>
+            <th style="width: 24%;">Rank Achieved</th>
+            <th style="width: 16%;">Score</th>
+            <th style="width: 12%;">Coins</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardFullBody">
+          <tr>
+            <td colspan="5" style="text-align:center; padding: 36px 16px; color: var(--text-muted); font-family: 'Rajdhani', sans-serif;">
+              <div style="font-size: 1.2rem; color: var(--color-cyan); margin-bottom: 6px;">&#9889; Loading Hall of Fame Contenders...</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bottom Actions Row -->
+    <div class="lb-actions-row">
+      <a href="index.html" class="lb-play-btn">
+        <span>&#9658;</span> PLAY &amp; CLAIM TOP 5
+      </a>
+      <a href="credits.html" class="lb-dev-link">
+        &#128104;&#8205;&#128187; The Developer: Adittya Dey &rarr;
+      </a>
+    </div>
+  </main>
+
+  <!-- Page Footer -->
+  <footer class="lb-footer-bar">
+    &copy; 2026 BRAC University Computer Club • Member Promotion Trials • Real Player Hall of Fame
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    async function renderLeaderboardPage() {
+      const tbody = document.getElementById("leaderboardFullBody");
+      const podium = document.getElementById("podiumContainer");
+      if (!tbody) return;
+
+      try {
+        const scores = await ApiService.getLeaderboard();
+        const top5 = (scores || []).slice(0, 5);
+
+        if (top5.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 40px 16px; color: var(--text-muted);">
+                <div style="font-size: 1.3rem; font-family: 'Orbitron', sans-serif; color: var(--color-cyan); margin-bottom: 8px;">
+                  &#9889; Awaiting First Contender
+                </div>
+                <div style="font-size: 1.05rem;">
+                  No actual candidates recorded yet. Complete the promotion trials to claim the #1 spot in the Top 5!
+                </div>
+              </td>
+            </tr>
+          `;
+          podium.style.display = "none";
+          return;
+        }
+
+        // Render Podium if at least 1 real player exists
+        if (top5.length > 0) {
+          podium.style.display = "grid";
+          let podiumHtml = "";
+
+          // Rank 2 (Silver)
+          if (top5[1]) {
+            podiumHtml += `
+              <div class="podium-card rank-2">
+                <div class="podium-medal">&#129358;</div>
+                <div class="podium-name">${top5[1].name}</div>
+                <div class="podium-score">${top5[1].score.toLocaleString()}</div>
+                <div class="podium-rank-tag">${top5[1].rank || "Executive"}</div>
+              </div>
+            `;
+          } else {
+            podiumHtml += `
+              <div class="podium-card rank-2" style="opacity: 0.45;">
+                <div class="podium-medal">&#129358;</div>
+                <div class="podium-name">-- Open --</div>
+                <div class="podium-score">-</div>
+                <div class="podium-rank-tag">Slot #2</div>
+              </div>
+            `;
+          }
+
+          // Rank 1 (Gold Champion)
+          podiumHtml += `
+            <div class="podium-card rank-1">
+              <div class="podium-medal">&#129357;</div>
+              <div class="podium-name">${top5[0].name}</div>
+              <div class="podium-score">${top5[0].score.toLocaleString()}</div>
+              <div class="podium-rank-tag">${top5[0].rank || "GB Leader"}</div>
+            </div>
+          `;
+
+          // Rank 3 (Bronze)
+          if (top5[2]) {
+            podiumHtml += `
+              <div class="podium-card rank-3">
+                <div class="podium-medal">&#129359;</div>
+                <div class="podium-name">${top5[2].name}</div>
+                <div class="podium-score">${top5[2].score.toLocaleString()}</div>
+                <div class="podium-rank-tag">${top5[2].rank || "Sr. Executive"}</div>
+              </div>
+            `;
+          } else {
+            podiumHtml += `
+              <div class="podium-card rank-3" style="opacity: 0.45;">
+                <div class="podium-medal">&#129359;</div>
+                <div class="podium-name">-- Open --</div>
+                <div class="podium-score">-</div>
+                <div class="podium-rank-tag">Slot #3</div>
+              </div>
+            `;
+          }
+
+          podium.innerHTML = podiumHtml;
+        }
+
+        // Render strictly top 5 rows
+        let rowsHtml = "";
+        for (let i = 0; i < 5; i++) {
+          if (i < top5.length) {
+            const p = top5[i];
+            const rankClass = i === 0 ? "gold" : (i === 1 ? "silver" : (i === 2 ? "bronze" : "cyan"));
+            const medal = i === 0 ? "&#129357;" : (i === 1 ? "&#129358;" : (i === 2 ? "&#129359;" : ""));
+            rowsHtml += `
+              <tr>
+                <td class="rank-cell-num ${rankClass}">#${i + 1} ${medal}</td>
+                <td><strong>${p.name}</strong></td>
+                <td><span style="color:var(--color-gold); font-family: 'Rajdhani', sans-serif;">${p.rank || "General Member"}</span></td>
+                <td class="score-cell-val">${p.score.toLocaleString()}</td>
+                <td class="coins-cell-val">${p.coins || 0} C</td>
+              </tr>
+            `;
+          } else {
+            rowsHtml += `
+              <tr style="opacity: 0.4;">
+                <td class="rank-cell-num">#${i + 1}</td>
+                <td class="empty-slot-text">-- Open Contender Slot --</td>
+                <td>-</td>
+                <td class="score-cell-val">-</td>
+                <td class="coins-cell-val">-</td>
+              </tr>
+            `;
+          }
+        }
+
+        tbody.innerHTML = rowsHtml;
+      } catch (err) {
+        console.error("Error rendering leaderboard page:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", renderLeaderboardPage);
+  </script>
+</body>
+</html>

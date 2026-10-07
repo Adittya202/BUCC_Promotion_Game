@@ -49,6 +49,7 @@ function loadScript(filePath) {
 }
 
 loadScript('./js/config.js');
+loadScript('./js/api.js');
 loadScript('./js/particles.js');
 loadScript('./js/player.js');
 loadScript('./js/enemies.js');
@@ -142,12 +143,14 @@ for (let d = 0; d < 7; d++) {
     console.assert(lm.l3Enemies[0].hp >= 120, `Adittya has increased HP (got ${lm.l3Enemies[0].hp})`);
     console.assert(lm.l3Enemies[0].scale >= 1.3, `Adittya has increased scale (got ${lm.l3Enemies[0].scale})`);
     console.assert(lm.l3Enemies[0].height > 70, `Adittya is bigger in height (got ${lm.l3Enemies[0].height})`);
+    console.assert(lm.l3Enemies[0].fireRate <= 0.9, `Adittya has increased fire rate (got ${lm.l3Enemies[0].fireRate})`);
     
     console.assert(lm.l3Enemies[1].name === "Subrajit", "SE 2 is Subrajit");
     console.assert(lm.l3Enemies[1].hp >= 120, `Subrajit has increased HP (got ${lm.l3Enemies[1].hp})`);
     console.assert(lm.l3Enemies[1].scale >= 1.3, `Subrajit has increased scale (got ${lm.l3Enemies[1].scale})`);
     console.assert(lm.l3Enemies[1].height > 70, `Subrajit is bigger in height (got ${lm.l3Enemies[1].height})`);
-    console.log("  -> [VERIFIED] Adittya & Subrajit are bigger in size with higher health level!");
+    console.assert(lm.l3Enemies[1].fireRate <= 0.9, `Subrajit has increased fire rate (got ${lm.l3Enemies[1].fireRate})`);
+    console.log("  -> [VERIFIED] Adittya & Subrajit are bigger in size with higher health level and faster fire rate!");
   }
 
   // Defeat both
@@ -175,6 +178,7 @@ for (let d = 0; d < 7; d++) {
   console.log(`EB Director #${d + 1}: "${eb.name}" (Expected: "${expectedEBs[d]}")`);
   console.assert(eb.name === expectedEBs[d], `EB Director name matches`);
   console.assert(eb.bulletSpeed >= 720, `EB bullet speed is increased (got ${eb.bulletSpeed})`);
+  console.assert(eb.fireRate <= 0.8, `EB fire rate is increased (got ${eb.fireRate})`);
 
   // Test firing
   mockGame.bullets = [];
@@ -186,7 +190,7 @@ for (let d = 0; d < 7; d++) {
     console.assert(eb.scale >= 1.3, `Kabya Apu is bigger in size (got ${eb.scale})`);
     console.assert(eb.height > 72, `Kabya Apu height is larger (got ${eb.height})`);
     console.assert(mockGame.bullets[0].pattern === "flare", `Kabya Apu throws flairs instead of bullets (pattern: ${mockGame.bullets[0].pattern})`);
-    console.log("  -> [VERIFIED] Kabya Apu has Fire Gun, bigger size, and throws flairs!");
+    console.log("  -> [VERIFIED] Kabya Apu has Fire Gun, bigger size, fast firing rate, and throws flairs!");
   }
 
   eb.isDead = true;
@@ -210,4 +214,41 @@ lm.l5Bosses.forEach((b, idx) => {
 lm.update(0.1);
 console.assert(mockGame.victoryTriggered === true, "Victory triggered after defeating all 4 GB bosses");
 
-console.log("\n>>> ALL TESTS PASSED SUCCESSFULLY! <<<");
+// 6. TEST LEADERBOARD TOP 5 LIMIT & REAL PLAYERS
+console.log("\n--- Testing Leaderboard Top 5 & Real Player Logic ---");
+(async () => {
+  let inMemoryBoard = [];
+  global.localStorage = {
+    getItem: (k) => k === "bucc_game_leaderboard" ? JSON.stringify(inMemoryBoard) : null,
+    setItem: (k, v) => { if (k === "bucc_game_leaderboard") inMemoryBoard = JSON.parse(v); }
+  };
+
+  // Submit 7 real players
+  const testPlayers = [
+    { name: "Adittya", score: 25000 },
+    { name: "Rahim", score: 18000 },
+    { name: "Karim", score: 21000 },
+    { name: "Sadia", score: 15000 },
+    { name: "Fahim", score: 12000 },
+    { name: "Tanvir", score: 9000 },
+    { name: "Ayesha", score: 30000 }
+  ];
+
+  for (const tp of testPlayers) {
+    await ApiService.submitScore(tp);
+  }
+
+  const finalBoard = await ApiService.getLeaderboard();
+  console.log("Recorded Top 5 Leaderboard:");
+  finalBoard.forEach((p, i) => console.log(`  #${i + 1}: ${p.name} - Score: ${p.score}`));
+
+  console.assert(finalBoard.length === 5, `Strictly top 5 entries kept, got ${finalBoard.length}`);
+  console.assert(finalBoard[0].name === "Ayesha", `Rank #1 is highest score Ayesha (got ${finalBoard[0].name})`);
+  console.assert(finalBoard[1].name === "Adittya", `Rank #2 is Adittya (got ${finalBoard[1].name})`);
+  console.assert(finalBoard[2].name === "Karim", `Rank #3 is Karim (got ${finalBoard[2].name})`);
+  console.assert(!finalBoard.some(p => p.name === "Fahim" || p.name === "Tanvir"), "Scores outside top 5 are not in leaderboard");
+  console.assert(!finalBoard.some(p => p.name.includes("Rookie GM")), "No fake seeded names present");
+  console.log("  -> [VERIFIED] Leaderboard strictly shows top 5 real players!");
+
+  console.log("\n>>> ALL TESTS PASSED SUCCESSFULLY! <<<");
+})();

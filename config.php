@@ -141,8 +141,8 @@ return [
                 ['name' => 'Tasnim', 'title' => 'Talent Officer', 'rank' => 'Executive']
             ],
             'senior_executives' => [
-                ['name' => 'Adittya', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 130, 'scale' => 1.35],
-                ['name' => 'Subrajit', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 130, 'scale' => 1.35]
+                ['name' => 'Adittya', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 130, 'scale' => 1.35, 'fire_rate' => 0.85],
+                ['name' => 'Subrajit', 'title' => 'Sr. Exec HR', 'rank' => 'Senior Executive', 'hp' => 130, 'scale' => 1.35, 'fire_rate' => 0.85]
             ]
         ],
         'rnd' => [
@@ -163,13 +163,13 @@ return [
 
     // Exactly 7 Executive Board (EB) Members (1 from each department as listed by user)
     'executive_board_members' => [
-        ['name' => 'Zawad Bhai', 'dept' => 'C&M', 'title' => 'EB C&M Director', 'color' => '#ff9f1c', 'fire_rate' => 1.1, 'bullet_speed' => 750],
-        ['name' => 'Luban Bhai', 'dept' => 'Creative', 'title' => 'EB Creative Director', 'color' => '#ff2a85', 'fire_rate' => 1.1, 'bullet_speed' => 750],
-        ['name' => 'Rafi Bhai', 'dept' => 'Event Management', 'title' => 'EB Event Operations Director', 'color' => '#2ec4b6', 'fire_rate' => 1.1, 'bullet_speed' => 750],
-        ['name' => 'Rawnak Bhai', 'dept' => 'Finance', 'title' => 'EB Treasury Director', 'color' => '#ffd166', 'fire_rate' => 1.1, 'bullet_speed' => 750],
-        ['name' => 'Kabya Apu', 'dept' => 'HR', 'title' => 'EB Governance & HR Director', 'color' => '#ff5722', 'hp' => 140, 'fire_rate' => 1.0, 'bullet_speed' => 720, 'has_fire_gun' => true, 'scale' => 1.35],
-        ['name' => 'Anika Apu', 'dept' => 'PR', 'title' => 'EB PR Director', 'color' => '#00b4d8', 'fire_rate' => 1.1, 'bullet_speed' => 750],
-        ['name' => 'Abir Bhai', 'dept' => 'R&D', 'title' => 'EB Technology Director', 'color' => '#00f5d4', 'fire_rate' => 1.0, 'bullet_speed' => 780]
+        ['name' => 'Zawad Bhai', 'dept' => 'C&M', 'title' => 'EB C&M Director', 'color' => '#ff9f1c', 'fire_rate' => 0.75, 'bullet_speed' => 750],
+        ['name' => 'Luban Bhai', 'dept' => 'Creative', 'title' => 'EB Creative Director', 'color' => '#ff2a85', 'fire_rate' => 0.75, 'bullet_speed' => 750],
+        ['name' => 'Rafi Bhai', 'dept' => 'Event Management', 'title' => 'EB Event Operations Director', 'color' => '#2ec4b6', 'fire_rate' => 0.75, 'bullet_speed' => 750],
+        ['name' => 'Rawnak Bhai', 'dept' => 'Finance', 'title' => 'EB Treasury Director', 'color' => '#ffd166', 'fire_rate' => 0.75, 'bullet_speed' => 750],
+        ['name' => 'Kabya Apu', 'dept' => 'HR', 'title' => 'EB Governance & HR Director', 'color' => '#ff5722', 'hp' => 140, 'fire_rate' => 0.7, 'bullet_speed' => 720, 'has_fire_gun' => true, 'scale' => 1.35],
+        ['name' => 'Anika Apu', 'dept' => 'PR', 'title' => 'EB PR Director', 'color' => '#00b4d8', 'fire_rate' => 0.75, 'bullet_speed' => 750],
+        ['name' => 'Abir Bhai', 'dept' => 'R&D', 'title' => 'EB Technology Director', 'color' => '#00f5d4', 'fire_rate' => 0.7, 'bullet_speed' => 780]
     ],
 
     // Exactly 4 Governing Body (GB) Members (All 4 together in the last level)

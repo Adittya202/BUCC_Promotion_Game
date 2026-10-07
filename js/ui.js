@@ -54,22 +54,64 @@ class UIManager {
   }
 
   bindEvents() {
-    // Start game button
+    // Load saved candidate name if previously typed
+    const savedName = localStorage.getItem("bucc_player_name");
+    if (savedName && this.playerNameInput) {
+      this.playerNameInput.value = savedName;
+      this.game.playerName = savedName;
+    }
+
+    // Start game button: Player must write their name at the beginning
     const btnStart = document.getElementById("btnStartGame");
     if (btnStart) {
       btnStart.addEventListener("click", () => {
-        const enteredName = this.playerNameInput.value.trim();
-        this.game.playerName = enteredName.length > 0 ? enteredName : "General Member";
-        this.game.player.name = this.game.playerName;
+        const enteredName = this.playerNameInput ? this.playerNameInput.value.trim() : "";
+        const errorMsg = document.getElementById("nameErrorMsg");
+        if (!enteredName || enteredName.length === 0) {
+          if (this.playerNameInput) {
+            this.playerNameInput.classList.add("input-error");
+            this.playerNameInput.focus();
+          }
+          if (errorMsg) errorMsg.classList.remove("hidden");
+          return;
+        }
+
+        if (errorMsg) errorMsg.classList.add("hidden");
+        if (this.playerNameInput) this.playerNameInput.classList.remove("input-error");
+
+        this.game.playerName = enteredName;
+        this.game.player.name = enteredName;
+        localStorage.setItem("bucc_player_name", enteredName);
+
+        // Immediately trigger background music on Start Game user gesture
+        Sounds.hasUserInteracted = true;
+        Sounds.ensureAudioContext();
+        if (!Sounds.isMuted) {
+          Sounds.playBgm();
+        }
+
         this.game.startGame();
       });
     }
 
-    // Name input auto-sync
+    // Name input auto-sync, error dismissal & Enter-key trigger
     if (this.playerNameInput) {
+      this.playerNameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (btnStart) btnStart.click();
+        }
+      });
+
       this.playerNameInput.addEventListener("input", (e) => {
         const val = e.target.value.trim();
-        this.game.playerName = val.length > 0 ? val : "General Member";
+        const errorMsg = document.getElementById("nameErrorMsg");
+        if (val.length > 0) {
+          this.playerNameInput.classList.remove("input-error");
+          if (errorMsg) errorMsg.classList.add("hidden");
+          this.game.playerName = val;
+          localStorage.setItem("bucc_player_name", val);
+        }
       });
     }
 
@@ -97,6 +139,10 @@ class UIManager {
     btnRestartList.forEach((btn) => {
       btn.addEventListener("click", () => {
         this.hideAllModals();
+        Sounds.ensureAudioContext();
+        if (!Sounds.isMuted) {
+          Sounds.playBgm();
+        }
         this.game.restartGame();
       });
     });
@@ -147,7 +193,7 @@ class UIManager {
     this.gameOverModal.classList.remove("hidden");
     Sounds.playGameOver();
 
-    // Auto-submit score to API/localStorage
+    // Auto-submit score to API/localStorage and update Top 5 Leaderboard
     ApiService.submitScore({
       name: this.game.playerName,
       score: this.game.score,
@@ -155,6 +201,14 @@ class UIManager {
       rank: GAME_CONFIG.ranks[this.game.player.rank].name,
       level_reached: this.game.levelManager.currentLevel,
       victory: false
+    }).then((res) => {
+      this.loadLeaderboard();
+      const rankBadge = document.getElementById("goRank");
+      if (res && res.leaderboard_rank && res.leaderboard_rank <= 5) {
+        if (rankBadge) {
+          rankBadge.innerHTML = `${GAME_CONFIG.ranks[this.game.player.rank].name} <div class="top5-pill">&#127942; RANK #${res.leaderboard_rank} IN TOP 5!</div>`;
+        }
+      }
     });
   }
 
@@ -167,7 +221,7 @@ class UIManager {
     Sounds.playVictory();
     this.game.particles.burstConfetti(GAME_CONFIG.canvasWidth, GAME_CONFIG.canvasHeight);
 
-    // Auto-submit victory score
+    // Auto-submit victory score and update Top 5 Leaderboard
     ApiService.submitScore({
       name: this.game.playerName,
       score: this.game.score,
@@ -175,6 +229,14 @@ class UIManager {
       rank: "Governing Body Leader",
       level_reached: 5,
       victory: true
+    }).then((res) => {
+      this.loadLeaderboard();
+      const vicScoreEl = document.getElementById("vicScore");
+      if (res && res.leaderboard_rank && res.leaderboard_rank <= 5) {
+        if (vicScoreEl) {
+          vicScoreEl.innerHTML = `${this.game.score.toLocaleString()} <div class="top5-pill">&#127942; RANK #${res.leaderboard_rank} IN TOP 5!</div>`;
+        }
+      }
     });
   }
 
@@ -376,18 +438,48 @@ class UIManager {
     const scores = await ApiService.getLeaderboard();
     if (!this.leaderboardBody) return;
 
-    let rowsHtml = "";
-    scores.slice(0, 5).forEach((s, idx) => {
-      rowsHtml += `
+    const top5 = (scores || []).slice(0, 5);
+
+    if (top5.length === 0) {
+      this.leaderboardBody.innerHTML = `
         <tr>
-          <td class="rank-cell">#${idx + 1}</td>
-          <td><strong>${s.name}</strong></td>
-          <td><span style="color:var(--color-gold);">${s.rank || "General Member"}</span></td>
-          <td class="score-cell">${(s.score || 0).toLocaleString()}</td>
-          <td>${s.coins || 0} C</td>
+          <td colspan="5" class="empty-leaderboard-cell" style="text-align: center; padding: 28px 12px; color: var(--text-muted); font-family: var(--font-tech);">
+            <div style="font-size: 1.15rem; color: var(--color-cyan); margin-bottom: 6px;">&#9889; Awaiting First Contender</div>
+            <div>No candidates recorded yet. Complete the promotion trials to secure your spot in the Top 5!</div>
+          </td>
         </tr>
       `;
-    });
+      return;
+    }
+
+    let rowsHtml = "";
+    for (let i = 0; i < 5; i++) {
+      if (i < top5.length) {
+        const s = top5[i];
+        const isCurrent = s.name === this.game.playerName;
+        const rankColor = i === 0 ? "var(--color-gold)" : (i === 1 ? "#c0c0c0" : (i === 2 ? "#cd7f32" : "var(--color-cyan)"));
+        rowsHtml += `
+          <tr class="${isCurrent ? 'current-player-row' : ''}">
+            <td class="rank-cell" style="color: ${rankColor}; font-weight: bold;">#${i + 1}</td>
+            <td><strong>${s.name}</strong> ${isCurrent ? '<span class="you-badge">(YOU)</span>' : ''}</td>
+            <td><span style="color:var(--color-gold); font-family: var(--font-tech);">${s.rank || "General Member"}</span></td>
+            <td class="score-cell">${(s.score || 0).toLocaleString()}</td>
+            <td>${s.coins || 0} C</td>
+          </tr>
+        `;
+      } else {
+        // Open contender slot up to 5
+        rowsHtml += `
+          <tr class="empty-rank-row" style="opacity: 0.4;">
+            <td class="rank-cell">#${i + 1}</td>
+            <td style="font-style: italic; color: var(--text-muted);">-- Open Contender Slot --</td>
+            <td>-</td>
+            <td class="score-cell">-</td>
+            <td>-</td>
+          </tr>
+        `;
+      }
+    }
 
     this.leaderboardBody.innerHTML = rowsHtml;
   }

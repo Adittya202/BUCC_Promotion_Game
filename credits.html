@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Developer | BUCC Promotion Trials</title>
+  <meta name="description"
+    content="Official developer credits for BUCC Dino Runner &amp; Boss Shooter created by Adittya Dey.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/bucc-logo.svg">
+
+  <style>
+    /* Dedicated Developer Credit Page Styles */
+    body.credits-page-body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: radial-gradient(circle at 50% 25%, #0f1c3f 0%, #050a17 60%, #020409 100%);
+      color: #ffffff;
+      font-family: 'Rajdhani', sans-serif;
+      padding: 24px 16px 20px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient cyber grid background lines */
+    .credits-page-body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .credits-nav-bar {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 12px;
+    }
+
+    .credits-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(10, 20, 45, 0.75);
+      border: 1.5px solid var(--color-cyan);
+      color: var(--color-cyan);
+      padding: 9px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    .credits-back-btn:hover {
+      background: var(--color-cyan);
+      color: #030712;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+      transform: translateX(-3px);
+    }
+
+    .club-tag {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: var(--color-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Main Center Content Box */
+    .developer-main-container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      margin: auto 0;
+      text-align: center;
+    }
+
+    /* Headline: The developer */
+    .developer-headline {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin: 0 0 16px;
+      text-transform: capitalize;
+      background: linear-gradient(135deg, #ffffff 0%, var(--color-cyan) 50%, var(--color-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 35px rgba(0, 240, 255, 0.45);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+    }
+
+    /* Picture Frame covering maximum portion of the page */
+    .developer-photo-card {
+      position: relative;
+      width: min(88vw, 680px);
+      height: min(60vh, 580px);
+      border-radius: 18px;
+      padding: 6px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.6), rgba(155, 93, 229, 0.5), rgba(255, 209, 102, 0.4));
+      box-shadow:
+        0 0 30px rgba(0, 240, 255, 0.35),
+        0 0 65px rgba(155, 93, 229, 0.25),
+        0 20px 45px rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .developer-photo-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 45px rgba(0, 240, 255, 0.55),
+        0 0 90px rgba(155, 93, 229, 0.4),
+        0 25px 55px rgba(0, 0, 0, 0.95);
+    }
+
+    .developer-photo-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background: #090e1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .developer-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .developer-photo-card:hover .developer-img {
+      transform: scale(1.025);
+    }
+
+    /* Cyber holographic corner brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 3px solid var(--color-cyan);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .corner-tl {
+      top: 12px;
+      left: 12px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .corner-tr {
+      top: 12px;
+      right: 12px;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .corner-bl {
+      bottom: 12px;
+      left: 12px;
+      border-right: none;
+      border-top: none;
+    }
+
+    .corner-br {
+      bottom: 12px;
+      right: 12px;
+      border-left: none;
+      border-top: none;
+    }
+
+    /* Copyright claim section under picture */
+    .developer-info-footer {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Exact Copyright claim requirement */
+    .copyright-claim {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffd166, #ff9f1c, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 209, 102, 0.4);
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+    }
+
+    .copyright-subline {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .credits-footer-bar {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body class="credits-page-body">
+
+  <!-- Top Navigation Header -->
+  <header class="credits-nav-bar">
+    <a href="index.html" class="credits-back-btn">
+      <span>&#9668;</span> BACK TO GAME
+    </a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="leaderboard.html" class="nav-credit-btn" style="border-color: var(--color-gold); color: var(--color-gold); margin-right: 0;" title="View Top 5 Hall of Fame">
+        <span class="credit-icon">&#127942;</span> LEADERBOARD
+      </a>
+      <div class="club-tag">
+        <span>&#9889;</span> BUCC PROMOTION GAME
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Center Section -->
+  <main class="developer-main-container">
+    <!-- Headline: The developer -->
+    <h1 class="developer-headline">The developer</h1>
+
+    <!-- Photo Container covering maximum portion of the page -->
+    <div class="developer-photo-card">
+      <div class="corner-bracket corner-tl"></div>
+      <div class="corner-bracket corner-tr"></div>
+      <div class="corner-bracket corner-bl"></div>
+      <div class="corner-bracket corner-br"></div>
+
+      <div class="developer-photo-inner">
+        <!-- Demo picture in resources folder (can be swapped with user's actual photo) -->
+        <img src="resources/developer.jpg" alt="The Developer - Adittya Dey" class="developer-img" id="developerPhoto"
+          onerror="this.onerror=null; this.src='assets/resources/developer.jpg';">
+      </div>
+    </div>
+
+    <!-- Copyright Claim under the picture -->
+    <div class="developer-info-footer">
+      <div class="copyright-claim">Adittya Dey</div>
+      <div class="copyright-subline">BRAC University Computer Club • Promotion Trials</div>
+    </div>
+  </main>
+
+  <!-- Bottom Page Notice -->
+  <footer class="credits-footer-bar">
+    &copy; 2026 BRAC University Computer Club HR Department &amp; Development by Adittya Dey
+  </footer>
+
+</body>
+
+</html>

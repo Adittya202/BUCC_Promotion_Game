@@ -21,24 +21,43 @@ class SoundSystem {
 
     this.initAudioElement();
     this.bindFirstInteraction();
+
+    // Ensure mute button UI is synchronized with state
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => this.updateMuteUI());
+    } else {
+      setTimeout(() => this.updateMuteUI(), 0);
+    }
   }
 
   initAudioElement() {
     this.bgmAudio = document.getElementById("bgmAudio");
     if (!this.bgmAudio) {
-      this.bgmAudio = new Audio("assets/audio/bgm.mp3");
+      this.bgmAudio = new Audio();
       this.bgmAudio.id = "bgmAudio";
       this.bgmAudio.loop = true;
       document.body.appendChild(this.bgmAudio);
     }
-    this.bgmAudio.volume = 0.5;
+    this.bgmAudio.loop = true;
+    this.bgmAudio.volume = 0.55;
     this.bgmAudio.muted = this.isMuted;
 
-    // If audio element encounters an error, fallback to procedural Web Audio synth
-    this.bgmAudio.addEventListener("error", () => {
-      console.warn("[SoundSystem] bgm.mp3 failed to load via HTMLAudio. Activating Web Audio synthesizer.");
-      if (this.hasUserInteracted && !this.isMuted) {
-        this.startFallbackBgmSynth();
+    // If no direct src or source tags exist, provide fallback src
+    if (!this.bgmAudio.src && (!this.bgmAudio.children || this.bgmAudio.children.length === 0)) {
+      this.bgmAudio.src = "assets/audio/bgm.mp3";
+    }
+
+    // Auto-fallback to alternative filename if load errors out
+    this.bgmAudio.addEventListener("error", (e) => {
+      console.warn("[SoundSystem] bgmAudio load error:", e);
+      const curr = this.bgmAudio.currentSrc || this.bgmAudio.src || "";
+      if (curr.includes("bgm.mp3")) {
+        console.log("[SoundSystem] Falling back to videoplayback (mp3cut.net).mp3");
+        this.bgmAudio.src = "assets/audio/videoplayback (mp3cut.net).mp3";
+        this.bgmAudio.load();
+        if (this.bgmPlaying && !this.isMuted) {
+          this.bgmAudio.play().catch(() => {});
+        }
       }
     });
   }
@@ -51,7 +70,7 @@ class SoundSystem {
       }
     }
     if (this.audioContext && this.audioContext.state === "suspended") {
-      this.audioContext.resume();
+      this.audioContext.resume().catch(() => {});
     }
   }
 
@@ -60,11 +79,10 @@ class SoundSystem {
       if (!this.hasUserInteracted) {
         this.hasUserInteracted = true;
         this.ensureAudioContext();
-        this.playBgm();
+        if (!this.isMuted) {
+          this.playBgm();
+        }
       }
-      window.removeEventListener("keydown", handleFirstInteraction);
-      window.removeEventListener("mousedown", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
     };
 
     window.addEventListener("keydown", handleFirstInteraction, { passive: true });
@@ -75,7 +93,17 @@ class SoundSystem {
   playBgm() {
     if (this.isMuted) return;
 
+    this.ensureAudioContext();
+    this.stopFallbackBgmSynth();
+
+    if (!this.bgmAudio) {
+      this.initAudioElement();
+    }
+
     if (this.bgmAudio) {
+      this.bgmAudio.muted = false;
+      this.bgmAudio.volume = 0.55;
+
       const playPromise = this.bgmAudio.play();
       if (playPromise !== undefined) {
         playPromise
@@ -83,12 +111,26 @@ class SoundSystem {
             this.bgmPlaying = true;
           })
           .catch((err) => {
-            console.warn("[SoundSystem] Autoplay blocked or bgm error:", err);
-            this.startFallbackBgmSynth();
+            console.warn("[SoundSystem] BGM play() rejected:", err.name, err.message);
+            // If blocked by browser autoplay policy before gesture, don't start synth yet
+            if (err.name !== "NotAllowedError") {
+              const curr = this.bgmAudio.currentSrc || this.bgmAudio.src || "";
+              if (curr.includes("bgm.mp3")) {
+                this.bgmAudio.src = "assets/audio/videoplayback (mp3cut.net).mp3";
+                this.bgmAudio.load();
+                this.bgmAudio.play()
+                  .then(() => {
+                    this.bgmPlaying = true;
+                  })
+                  .catch(() => {
+                    this.startFallbackBgmSynth();
+                  });
+              } else {
+                this.startFallbackBgmSynth();
+              }
+            }
           });
       }
-    } else {
-      this.startFallbackBgmSynth();
     }
   }
 
@@ -124,11 +166,13 @@ class SoundSystem {
     muteBtns.forEach((btn) => {
       if (this.isMuted) {
         btn.classList.add("muted");
-        btn.setAttribute("title", "Unmute Audio");
+        btn.setAttribute("title", "Unmute Audio (Turn Sound ON)");
+        btn.setAttribute("aria-label", "Unmute Audio");
         btn.innerHTML = `<span class="icon">&#128263;</span>`;
       } else {
         btn.classList.remove("muted");
-        btn.setAttribute("title", "Mute Audio");
+        btn.setAttribute("title", "Mute Audio (Turn Sound OFF)");
+        btn.setAttribute("aria-label", "Mute Audio");
         btn.innerHTML = `<span class="icon">&#128266;</span>`;
       }
     });
