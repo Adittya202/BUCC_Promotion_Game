@@ -1,0 +1,152 @@
+[
+    {
+        "id": "score_6ac4ffc114d9d",
+        "name": "BUCC Candidate",
+        "score": 23320,
+        "coins": 21,
+        "rank": "Governing Body Leader",
+        "level_reached": 4,
+        "victory": true,
+        "created_at": "2026-10-06 16:03:45"
+    },
+    {
+        "id": "score_seed_1",
+        "name": "Adittya (R&D)",
+        "score": 12850,
+        "coins": 142,
+        "rank": "Governing Body Leader",
+        "level_reached": 4,
+        "victory": true,
+        "created_at": "2026-10-06 14:20:00"
+    },
+    {
+        "id": "score_seed_2",
+        "name": "Mahir Coder",
+        "score": 9800,
+        "coins": 98,
+        "rank": "Executive Board",
+        "level_reached": 4,
+        "victory": false,
+        "created_at": "2026-10-06 13:45:10"
+    },
+    {
+        "id": "score_6ac4f3768dc2f",
+        "name": "BUCC Candidate",
+        "score": 9420,
+        "coins": 36,
+        "rank": "Executive Board",
+        "level_reached": 4,
+        "victory": false,
+        "created_at": "2026-10-06 15:11:18"
+    },
+    {
+        "id": "score_seed_3",
+        "name": "Abrar Creative",
+        "score": 7650,
+        "coins": 75,
+        "rank": "Senior Executive",
+        "level_reached": 3,
+        "victory": false,
+        "created_at": "2026-10-06 12:10:04"
+    },
+    {
+        "id": "score_6ac4f31072074",
+        "name": "BUCC Candidate",
+        "score": 7300,
+        "coins": 11,
+        "rank": "Senior Executive",
+        "level_reached": 3,
+        "victory": false,
+        "created_at": "2026-10-06 15:09:36"
+    },
+    {
+        "id": "score_6ac4dc1cdae1b",
+        "name": "Candidate Alpha",
+        "score": 6200,
+        "coins": 65,
+        "rank": "Executive",
+        "level_reached": 2,
+        "victory": false,
+        "created_at": "2026-10-06 13:31:40"
+    },
+    {
+        "id": "score_6ac4e8ea404ff",
+        "name": "BUCC Candidate",
+        "score": 5700,
+        "coins": 66,
+        "rank": "Executive",
+        "level_reached": 2,
+        "victory": false,
+        "created_at": "2026-10-06 14:26:18"
+    },
+    {
+        "id": "score_seed_4",
+        "name": "Tahmid C&M",
+        "score": 5400,
+        "coins": 58,
+        "rank": "Executive",
+        "level_reached": 2,
+        "victory": false,
+        "created_at": "2026-10-06 11:30:22"
+    },
+    {
+        "id": "score_6ac4ff566017b",
+        "name": "BUCC Candidate",
+        "score": 5170,
+        "coins": 19,
+        "rank": "Senior Executive",
+        "level_reached": 3,
+        "victory": false,
+        "created_at": "2026-10-06 16:01:58"
+    },
+    {
+        "id": "score_6ac4ebc0cfe1b",
+        "name": "BUCC Candidate",
+        "score": 5150,
+        "coins": 60,
+        "rank": "Executive",
+        "level_reached": 2,
+        "victory": false,
+        "created_at": "2026-10-06 14:38:24"
+    },
+    {
+        "id": "score_6ac4f3a13d365",
+        "name": "BUCC Candidate",
+        "score": 2650,
+        "coins": 31,
+        "rank": "Executive",
+        "level_reached": 2,
+        "victory": false,
+        "created_at": "2026-10-06 15:12:01"
+    },
+    {
+        "id": "score_seed_5",
+        "name": "BUCC Rookie GM",
+        "score": 2100,
+        "coins": 20,
+        "rank": "General Member",
+        "level_reached": 1,
+        "victory": false,
+        "created_at": "2026-10-06 10:05:51"
+    },
+    {
+        "id": "score_6ac4e8f69b76c",
+        "name": "BUCC Candidate",
+        "score": 300,
+        "coins": 3,
+        "rank": "General Member",
+        "level_reached": 1,
+        "victory": false,
+        "created_at": "2026-10-06 14:26:30"
+    },
+    {
+        "id": "score_6ac4ffd84d1d6",
+        "name": "BUCC Candidate",
+        "score": 300,
+        "coins": 3,
+        "rank": "General Member",
+        "level_reached": 1,
+        "victory": false,
+        "created_at": "2026-10-06 16:04:08"
+    }
+]

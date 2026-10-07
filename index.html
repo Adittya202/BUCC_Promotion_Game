@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUCC Dino Runner & Boss Shooter | BRAC University Computer Club</title>
+  <meta name="description" content="Arcade runner and boss shooter web game themed around the BRAC University Computer Club (BUCC) member promotional hierarchy.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/bucc-logo.svg">
+</head>
+<body>
+
+  <!-- Background Music Audio Element -->
+  <audio id="bgmAudio" src="assets/audio/bgm.mp3" loop preload="auto"></audio>
+
+  <!-- Global Header -->
+  <header class="site-header">
+    <div class="brand-container">
+      <img src="assets/images/bucc-logo.svg" alt="BUCC Crest" class="brand-logo" id="headerLogo">
+      <div class="brand-text">
+        <h1 id="mainTitle">BRAC UNIVERSITY COMPUTER CLUB</h1>
+        <div class="sub">Member Promotion Trials • Runner & Boss Shooter</div>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="icon-btn btn-toggle-mute" id="btnAudioMute" title="Toggle Sound" aria-label="Toggle Sound">
+        <span class="icon">&#128266;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Area -->
+  <main class="game-viewport-wrapper">
+    <div class="canvas-container" id="canvasContainer">
+      <!-- Game Canvas -->
+      <canvas id="gameCanvas" width="960" height="480"></canvas>
+
+      <!-- In-Game HUD Overlay -->
+      <div class="hud-overlay hidden" id="hudOverlay">
+        <div class="hud-left">
+          <div class="hud-profile-card">
+            <img src="assets/images/badges/gm-badge.svg" alt="Badge" class="hud-badge-img" id="hudBadgeImg">
+            <div class="hud-profile-info">
+              <span class="hud-player-name" id="hudPlayerName">General Member</span>
+              <span class="hud-player-rank" id="hudPlayerRank">GM</span>
+            </div>
+          </div>
+          <div class="hud-coin-pill">
+            <span class="coin-icon">C</span>
+            <span id="hudCoinCount">0</span>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <div class="hud-objective-pill">
+            <span class="hud-obj-title" id="hudObjTitle">STAGE 1: GM RUNNER</span>
+            <span class="hud-obj-detail" id="hudObjDetail">GMs Dodged: 0 / 15</span>
+          </div>
+        </div>
+
+        <div class="hud-right">
+          <!-- Weapon HUD Widget (Level 3 & 4) -->
+          <div class="hud-weapon-widget" id="hudWeaponWidget" style="display: none;">
+            <img src="assets/images/weapons/pistol.svg" alt="Weapon" class="hud-weapon-img" id="hudWeaponImg">
+            <div class="hud-cooldown-circle" id="hudCooldownCircle">
+              <span id="hudCooldownText">RDY</span>
+            </div>
+          </div>
+
+          <div class="hud-health-wrap">
+            <!-- Shield Energy Bar -->
+            <div class="hud-bar-row">
+              <div class="hud-shield-track" title="Energy Shield (Right Click to Block Bullets)">
+                <div class="hud-shield-fill" id="hudShieldFill"></div>
+              </div>
+              <div class="hud-bar-info">
+                <span class="hud-bar-label">SHIELD</span>
+                <span id="hudShieldVal">100%</span>
+              </div>
+            </div>
+            <!-- Health Bar -->
+            <div class="hud-bar-row">
+              <div class="hud-hp-track">
+                <div class="hud-hp-fill" id="hudHpFill"></div>
+              </div>
+              <div class="hud-bar-info">
+                <span class="hud-bar-label">HP</span>
+                <span id="hudHpText">100 / 100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boss Health Bar Container (Level 4 GB Bosses) -->
+        <div class="boss-hud-overlay" id="bossHudOverlay" style="display: none;"></div>
+      </div>
+
+      <!-- Start Screen Modal -->
+      <div class="overlay-screen" id="startScreen">
+        <div class="modal-card start-modal-card">
+          <div class="start-badge-title-row">
+            <img src="assets/images/badges/gm-badge.svg" alt="GM Rank" class="start-badge-img" id="startRankBadge">
+            <div class="start-title-wrap">
+              <h2 class="modal-title start-title">BUCC PROMOTION TRIALS</h2>
+              <div class="modal-subtitle start-sub">DINO RUNNER &amp; BOSS SHOOTER</div>
+            </div>
+          </div>
+
+          <div class="start-hierarchy-pills">
+            <span class="rank-step active">7 GMs</span>
+            <span class="arrow">&rarr;</span>
+            <span class="rank-step">14 EXECS</span>
+            <span class="arrow">&rarr;</span>
+            <span class="rank-step">14 SR. EXECS</span>
+            <span class="arrow">&rarr;</span>
+            <span class="rank-step">7 EBS</span>
+            <span class="arrow">&rarr;</span>
+            <span class="rank-step gold">4 GBS</span>
+          </div>
+
+          <div class="input-group start-input-group">
+            <label for="playerNameInput" class="input-label">Candidate Name</label>
+            <input type="text" id="playerNameInput" class="cyber-input start-input" placeholder="Enter your name" maxlength="24" value="BUCC Candidate">
+          </div>
+
+          <div class="tutorial-row-compact">
+            <div class="tut-pill">
+              <span class="tut-key">SPACE / &uarr;</span>
+              <span class="tut-text">Jump Flip</span>
+            </div>
+            <div class="tut-pill">
+              <span class="tut-key">RIGHT CLICK</span>
+              <span class="tut-text">Hold Shield (Block Fire)</span>
+            </div>
+            <div class="tut-pill">
+              <span class="tut-key">LEFT CLICK / F</span>
+              <span class="tut-text">Aim &amp; Shoot (L3/L4)</span>
+            </div>
+          </div>
+
+          <button class="btn-cta btn-start-prominent" id="btnStartGame">
+            <span class="play-icon">&#9658;</span> START GAME
+          </button>
+        </div>
+      </div>
+
+      <!-- Promotion Celebration Modal -->
+      <div class="overlay-screen hidden" id="promotionModal">
+        <div class="modal-card">
+          <div class="modal-badge-wrapper">
+            <img src="assets/images/badges/exec-badge.svg" alt="Promoted Badge" class="modal-badge-large" id="promoBadgeImg">
+          </div>
+          <h2 class="modal-title shimmer-text" id="promoTitle">PROMOTION EARNED!</h2>
+          <div class="modal-subtitle" id="promoRankName">Executive</div>
+          <p class="modal-description" id="promoMessage">
+            Congratulations, You have been promoted from GM to Executive!
+          </p>
+          <button class="btn-cta" id="btnContinuePromotion">
+            CONTINUE TO NEXT LEVEL &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Intermission: The Promotion Store Modal -->
+      <div class="overlay-screen hidden" id="storeModal">
+        <div class="modal-card store-modal-card">
+          <div class="store-header-bar">
+            <div>
+              <h2 class="modal-title" style="margin: 0; font-size: 1.35rem;">THE PROMOTION STORE</h2>
+              <div class="modal-subtitle" style="margin: 0;">UPGRADE WEAPONS BEFORE THE ARENA COMBAT</div>
+            </div>
+            <div class="hud-coin-pill">
+              <span class="coin-icon">C</span>
+              <span id="storeCoinBalance">0</span>
+              <span style="font-size: 0.75rem; color: #fff; margin-left: 4px;">COINS</span>
+            </div>
+          </div>
+
+          <div class="store-weapon-grid" id="storeWeaponGrid">
+            <!-- Populated dynamically via ui.js -->
+          </div>
+
+          <button class="btn-cta" id="btnExitStore">
+            ADVANCE TO LEVEL 3 ARENA &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Over Modal -->
+      <div class="overlay-screen hidden" id="gameOverModal">
+        <div class="modal-card">
+          <h2 class="modal-title" style="color: var(--color-danger);">PROMOTION DENIED</h2>
+          <div class="modal-subtitle">YOU WERE OVERWHELMED DURING THE TRIALS</div>
+
+          <div class="stats-summary-card">
+            <div class="stat-item">
+              <span class="stat-lbl">Final Score</span>
+              <span class="stat-val" id="goScore">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-lbl">Coins</span>
+              <span class="stat-val gold" id="goCoins">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-lbl">Rank Achieved</span>
+              <span class="stat-val" id="goRank" style="font-size: 0.95rem;">GM</span>
+            </div>
+          </div>
+
+          <button class="btn-cta btn-restart-game" id="btnRestartGameOver">
+            <span>&#8635;</span> RESTART GAME
+          </button>
+        </div>
+      </div>
+
+      <!-- Victory Modal (Governing Body Triumph) -->
+      <div class="overlay-screen hidden" id="victoryModal">
+        <div class="modal-card">
+          <div class="modal-badge-wrapper">
+            <img src="assets/images/badges/gb-badge.svg" alt="GB Badge" class="modal-badge-large" style="width: 90px; height: 90px;">
+          </div>
+          <h2 class="modal-title shimmer-text" style="font-size: 1.65rem;">GOVERNING BODY ASCENSION!</h2>
+          <div class="modal-subtitle" style="color: var(--color-gold);">YOU DEFEATED ALL 4 GB LEADERS AND CLAIMED BUCC PRESIDENCY!</div>
+          <p class="modal-description">
+            Your leadership, tactical agility, and relentless dedication have brought you to the apex of BRAC University Computer Club!
+          </p>
+
+          <div class="stats-summary-card">
+            <div class="stat-item">
+              <span class="stat-lbl">Apex Score</span>
+              <span class="stat-val" id="vicScore">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-lbl">Total Coins</span>
+              <span class="stat-val gold" id="vicCoins">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-lbl">Final Title</span>
+              <span class="stat-val" style="font-size: 0.85rem; color: var(--color-gold);">GB PRESIDENT</span>
+            </div>
+          </div>
+
+          <button class="btn-cta btn-restart-game" id="btnRestartVictory">
+            <span>&#9733;</span> PLAY AGAIN
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard-section">
+      <div class="leaderboard-header">
+        <div class="leaderboard-title">
+          <span>&#127942;</span> BUCC HALL OF FAME LEADERBOARD
+        </div>
+        <div style="font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-muted);">
+          TOP CANDIDATES
+        </div>
+      </div>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Rank</th>
+            <th style="width: 38%;">Candidate Name</th>
+            <th style="width: 25%;">Promotion Rank</th>
+            <th style="width: 15%;">Score</th>
+            <th style="width: 10%;">Coins</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <!-- Populated from API/localStorage -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    BRAC University Computer Club (BUCC) &copy; 2026 • Built with HTML5 Canvas, Vanilla JS &amp; PHP
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
