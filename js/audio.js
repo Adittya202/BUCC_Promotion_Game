@@ -47,17 +47,11 @@ class SoundSystem {
       this.bgmAudio.src = "assets/audio/bgm.mp3";
     }
 
-    // Auto-fallback to alternative filename if load errors out
+    // If audio element encounters an error, start procedural ambient synth
     this.bgmAudio.addEventListener("error", (e) => {
-      console.warn("[SoundSystem] bgmAudio load error:", e);
-      const curr = this.bgmAudio.currentSrc || this.bgmAudio.src || "";
-      if (curr.includes("bgm.mp3")) {
-        console.log("[SoundSystem] Falling back to videoplayback (mp3cut.net).mp3");
-        this.bgmAudio.src = "assets/audio/videoplayback (mp3cut.net).mp3";
-        this.bgmAudio.load();
-        if (this.bgmPlaying && !this.isMuted) {
-          this.bgmAudio.play().catch(() => {});
-        }
+      console.warn("[SoundSystem] bgmAudio load error, falling back to procedural synth:", e);
+      if (this.bgmPlaying && !this.isMuted) {
+        this.startProceduralSynth();
       }
     });
   }

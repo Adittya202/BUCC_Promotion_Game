@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | BUCC Promotion Trials</title>
+  <meta name="description"
+    content="Contact the BUCC Promotion Trials development team and BRAC University Computer Club for feedback, bug reports, partnerships, and support.">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9922573621971155"
+    crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/bucc-logo.svg">
+</head>
+
+<body class="legal-page-body">
+
+  <!-- Header Bar -->
+  <header class="site-header">
+    <div class="brand-container">
+      <a href="index.html" style="display: flex; align-items: center; gap: 14px; text-decoration: none;">
+        <img src="assets/images/bucc-logo.svg" alt="BUCC Crest" class="brand-logo">
+        <div class="brand-text">
+          <h1>BRAC UNIVERSITY COMPUTER CLUB</h1>
+          <div class="sub">Member Promotion Trials • Contact Us</div>
+        </div>
+      </a>
+    </div>
+    <div class="header-controls">
+      <a href="index.html" class="nav-credit-btn" title="Back to Game">
+        <span>&#9668;</span> PLAY GAME
+      </a>
+      <a href="leaderboard.html" class="nav-credit-btn nav-lb-btn" title="View Top 5 Hall of Fame">
+        <span>&#127942;</span> LEADERBOARD
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Legal Container -->
+  <main class="legal-main-wrap">
+    <article class="legal-card">
+      <header class="legal-header">
+        <div class="legal-badge">&#9993; GET IN TOUCH</div>
+        <h1 class="legal-title">Contact Us</h1>
+        <div class="legal-meta">We welcome bug reports, gameplay feedback, and club collaborations</div>
+      </header>
+
+      <section class="legal-content">
+        <p>
+          Have a question about the <strong>BUCC Promotion Trials</strong>, encountered a glitch on your browser, or want to discuss a collaboration with BRAC University Computer Club? Fill out the inquiry form below or connect with us directly via our verified channels.
+        </p>
+
+        <div class="info-grid-2col" style="margin-bottom: 24px;">
+          <div class="hierarchy-box" style="padding: 20px;">
+            <span class="hb-badge gm">&#128104;&#8205;&#128187; LEAD DEVELOPER</span>
+            <span class="hb-title">Adittya Dey</span>
+            <p class="hb-desc">
+              Game Engine Architect &amp; Full Stack Developer<br>
+              <strong>Email:</strong> <a href="mailto:adittyadey202@gmail.com" style="color: var(--color-cyan);">adittyadey202@gmail.com</a><br>
+              <strong>Credits Profile:</strong> <a href="credits.html" style="color: var(--color-gold);">View Developer Page</a>
+            </p>
+          </div>
+
+          <div class="hierarchy-box" style="padding: 20px;">
+            <span class="hb-badge gb">&#127979; CLUB HEADQUARTERS</span>
+            <span class="hb-title">BRAC University Computer Club</span>
+            <p class="hb-desc">
+              School of Data &amp; Sciences, BRAC University<br>
+              Kha 224, Pragati Sarani, Merul Badda, Dhaka 1212<br>
+              <strong>Official Email:</strong> <a href="mailto:bucc@g.bracu.ac.bd" style="color: var(--color-cyan);">bucc@g.bracu.ac.bd</a>
+            </p>
+          </div>
+        </div>
+
+        <h2>Send Us a Direct Message</h2>
+        <form class="contact-form-card" id="contactForm" onsubmit="handleContactSubmit(event)">
+          <div class="form-group">
+            <label for="contactName" class="form-label">Your Name / Candidate Handle <span class="required-star">*</span></label>
+            <input type="text" id="contactName" class="form-input" placeholder="e.g. Mahir Al-Amin" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail" class="form-label">Email Address <span class="required-star">*</span></label>
+            <input type="email" id="contactEmail" class="form-input" placeholder="e.g. yourname@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contactTopic" class="form-label">Subject Category</label>
+            <select id="contactTopic" class="form-select">
+              <option value="feedback">General Gameplay Feedback</option>
+              <option value="bug">Bug Report / Technical Issue</option>
+              <option value="leaderboard">Leaderboard Score Dispute</option>
+              <option value="collaboration">Club Partnership &amp; Events</option>
+              <option value="privacy">Privacy &amp; Data Deletion Request</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage" class="form-label">Your Message <span class="required-star">*</span></label>
+            <textarea id="contactMessage" class="form-textarea" placeholder="Detail your feedback, issue, or question here..." required></textarea>
+          </div>
+
+          <div id="contactFeedback" class="hidden"></div>
+
+          <button type="submit" class="btn-cta btn-start-prominent" style="margin-top: 8px;">
+            <span>&#9993;</span> TRANSMIT MESSAGE
+          </button>
+        </form>
+
+      </section>
+    </article>
+  </main>
+
+  <!-- Universal Rich Footer -->
+  <footer class="global-site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col-brand">
+          <h3>
+            <img src="assets/images/bucc-logo.svg" alt="BUCC Crest" style="width: 28px; height: 28px;">
+            BUCC PROMOTION TRIALS
+          </h3>
+          <p>
+            The official arcade runner and boss shooter web game celebrating the promotional hierarchy and leadership journey of BRAC University Computer Club.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-nav-list">
+            <li><a href="index.html">&#9658; Play Game</a></li>
+            <li><a href="leaderboard.html">&#127942; Hall of Fame</a></li>
+            <li><a href="credits.html">&#128104;&#8205;&#128187; The Developer</a></li>
+            <li><a href="about.html">&#9889; About BUCC</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal &amp; Trust</h4>
+          <ul class="footer-nav-list">
+            <li><a href="privacy.html">&#128274; Privacy Policy</a></li>
+            <li><a href="terms.html">&#128220; Terms of Use</a></li>
+            <li><a href="contact.html" style="color: var(--color-cyan); font-weight: bold;">&#9993; Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Ad Transparency</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+            This website monetizes with Google AdSense to sustain game server costs and club activities.
+          </p>
+          <div class="footer-badges">
+            <span class="footer-badge-tag">ADSENSE READY</span>
+            <span class="footer-badge-tag">SSL SECURED</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom-bar">
+        <div>&copy; 2026 BRAC University Computer Club (BUCC) • Developed by Adittya Dey</div>
+        <div>Built with HTML5 Canvas, Web Audio API &amp; Vanilla JavaScript</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("contactName").value.trim();
+      const email = document.getElementById("contactEmail").value.trim();
+      const topic = document.getElementById("contactTopic").value;
+      const message = document.getElementById("contactMessage").value.trim();
+
+      const fb = document.getElementById("contactFeedback");
+      fb.className = "contact-success-msg";
+      fb.innerHTML = `&#10004; Transmission received, ${name}! Your dispatch regarding "${topic}" has been logged. Our development team will review it shortly.`;
+      
+      document.getElementById("contactForm").reset();
+    }
+  </script>
+
+</body>
+</html>
